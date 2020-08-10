@@ -989,12 +989,12 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                 break
                 # No hay botones cargados en la BAP
                 else:
+                    self.cargarEventoConfig(args.listaBotonesTab4, args.listaEventosTab4, args, tab1=False)
                     break
 
         # Si no hay botones cargados o no existe el tag, debe cargar por defecto los botones y eventos de Configuration.
         if botones is False:
             print('Si no hay botones cargados o no existe el tag, debe cargar por defecto los botones y eventos de Configuration.')
-            self.cargarEventoConfig(args.listaBotonesTab4, args.listaEventosTab4, args, tab1=False)
 
     # Setea las propiedades de cada evento cuando se modifican desde la GUI tab 1
     def setEventoConfig(self, listaBotones, listaEventos, args):
