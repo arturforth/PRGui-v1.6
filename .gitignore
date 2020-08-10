@@ -1,0 +1,14 @@
+*.dat
+*.dat_BKP
+*.dat_OLD
+*.ico
+*.spec
+*.config
+*.txt
+.idea/
+__pycache__/
+Archivos Configuracion/
+build/
+dist/
+resources/
+venv/
