@@ -769,12 +769,12 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                         break
                                 break
                 else:
-                    #return
+                    self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
                     break     # Esta el tag Botones pero no contiene nada.
 
         # # Si la BAP3 seleccionada no contiene botones, se cargan los botones del tag "Configuration"
         if botones is False:
-            self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
+            # self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
 
             if listaEventos.count() == 0:
                 estado = True
