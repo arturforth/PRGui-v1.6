@@ -773,6 +773,8 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
                     break
 
+        self.__setDisabled(listaEventos, listaBotones, botones, args)
+
         # # Si la BAP3 seleccionada no contiene botones, se cargan los botones del tag "Configuration"
         # if botones is False:
         #     # self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
@@ -1504,13 +1506,17 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         except ValueError:
             return None
 
-    def __setDisabled(self, lista, botones, args):
+    def __setDisabled(self, listaEventos, listaBotones, botones, args):
+        # cargarBotones
         if botones is False:
-            if lista.count() == 0:
+            if listaEventos.count() == 0:
                 estado = True
 
-                args.listaEventosTab4.setDisabled(estado)
+                listaEventos.setDisabled(estado)
+                args.agregarEventoTab4.setDisabled(estado)
                 args.removerEventoTab4.setDisabled(estado)
+                args.removerBotonTab4.setDisabled(estado)
+
                 args.comboBox1Tab4.setDisabled(estado)
                 args.spinBox1Tab4.setDisabled(estado)
                 args.spinBox2Tab4.setDisabled(estado)
@@ -1525,31 +1531,42 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 args.labelSalidaTab4.setVisible(not estado)
                 args.labelTiempoTab4.setVisible(not estado)
                 args.labelRtaOKTab4.setVisible(not estado)
-
             else:
-                estado = True
+                estado = False
 
-                args.listaEventosTab4.setDisabled(False)
-                args.removerEventoTab4.setDisabled(estado)
-                args.comboBox1Tab4.setDisabled(estado)
-                args.spinBox1Tab4.setDisabled(estado)
-                args.spinBox2Tab4.setDisabled(estado)
-                args.comboBox2Tab4.setDisabled(estado)
+                listaEventos.setDisabled(estado)
+                args.agregarEventoTab4.setDisabled(not estado)
+                args.removerEventoTab4.setDisabled(not estado)
+                args.removerBotonTab4.setDisabled(not estado)
 
-                args.comboBox1Tab4.setVisible(estado)
-                args.spinBox1Tab4.setVisible(estado)
-                args.spinBox2Tab4.setVisible(estado)
-                args.comboBox2Tab4.setVisible(estado)
+                args.comboBox1Tab4.setDisabled(not estado)
+                args.spinBox1Tab4.setDisabled(not estado)
+                args.spinBox2Tab4.setDisabled(not estado)
+                args.comboBox2Tab4.setDisabled(not estado)
 
-                args.labelAccionTab4.setVisible(estado)
-                args.labelSalidaTab4.setVisible(estado)
-                args.labelTiempoTab4.setVisible(estado)
-                args.labelRtaOKTab4.setVisible(estado)
+                args.comboBox1Tab4.setVisible(not estado)
+                args.spinBox1Tab4.setVisible(not estado)
+                args.spinBox2Tab4.setVisible(not estado)
+                args.comboBox2Tab4.setVisible(not estado)
+
+                args.labelAccionTab4.setVisible(not estado)
+                args.labelSalidaTab4.setVisible(not estado)
+                args.labelTiempoTab4.setVisible(not estado)
+                args.labelRtaOKTab4.setVisible(not estado)
+
+            # Cuando no hay botones en Configuration
+            # if listaBotones.count() == 0:
+            #     estado = True
+            #
+            #     listaBotones.setDisabled(estado)
+            #     args.agregarEventoTab4.setDisabled(estado)
+            #     args.removerEventoTab4.setDisabled(estado)
+            #     args.removerBotonTab4.setDisabled(estado)
 
         # Si hay botones cargados en la BAP
         elif botones is True:
             # Si no hay eventos se deshabilitan funciones correspondientes
-            if lista.count() == 0:
+            if listaEventos.count() == 0:
                 estado = True
             else:
                 estado = False
@@ -1570,3 +1587,66 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             args.labelSalidaTab4.setVisible(not estado)
             args.labelTiempoTab4.setVisible(not estado)
             args.labelRtaOKTab4.setVisible(not estado)
+
+            ####
+
+            # # cargarEventos
+            # if botones is False:
+            #     # self.cargarEventosConfig(args.listaBotonesTab4, args.listaEventosTab4, args)
+            #
+            #     if listaEventos.count() == 0:
+            #         print('cargarEventos: Configuration no tiene eventos cargados')
+            #         estado = True
+            #
+            #         args.comboBox1Tab4.setVisible(not estado)
+            #         args.spinBox1Tab4.setVisible(not estado)
+            #         args.spinBox2Tab4.setVisible(not estado)
+            #         args.comboBox2Tab4.setVisible(not estado)
+            #
+            #         args.labelAccionTab4.setVisible(not estado)
+            #         args.labelSalidaTab4.setVisible(not estado)
+            #         args.labelTiempoTab4.setVisible(not estado)
+            #         args.labelRtaOKTab4.setVisible(not estado)
+            #     else:
+            #         estado = True
+            #
+            #         args.removerEventoTab4.setDisabled(estado)
+            #         args.comboBox1Tab4.setDisabled(estado)
+            #         args.spinBox1Tab4.setDisabled(estado)
+            #         args.spinBox2Tab4.setDisabled(estado)
+            #         args.comboBox2Tab4.setDisabled(estado)
+            #
+            #         args.comboBox1Tab4.setVisible(estado)
+            #         args.spinBox1Tab4.setVisible(estado)
+            #         args.spinBox2Tab4.setVisible(estado)
+            #         args.comboBox2Tab4.setVisible(estado)
+            #
+            #         args.labelAccionTab4.setVisible(estado)
+            #         args.labelSalidaTab4.setVisible(estado)
+            #         args.labelTiempoTab4.setVisible(estado)
+            #         args.labelRtaOKTab4.setVisible(estado)
+            #
+            # # Si hay botones cargados en la BAP
+            # elif botones is True:
+            #     # Si no hay eventos se deshabilitan funciones correspondientes
+            #     if listaEventos.count() == 0:
+            #         estado = True
+            #     else:
+            #         estado = False
+            #
+            #     # args.listaEventosTab4.setDisabled(estado)
+            #     args.removerEventoTab4.setDisabled(estado)
+            #     args.comboBox1Tab4.setDisabled(estado)
+            #     args.spinBox1Tab4.setDisabled(estado)
+            #     args.spinBox2Tab4.setDisabled(estado)
+            #     args.comboBox2Tab4.setDisabled(estado)
+            #
+            #     args.comboBox1Tab4.setVisible(not estado)
+            #     args.spinBox1Tab4.setVisible(not estado)
+            #     args.spinBox2Tab4.setVisible(not estado)
+            #     args.comboBox2Tab4.setVisible(not estado)
+            #
+            #     args.labelAccionTab4.setVisible(not estado)
+            #     args.labelSalidaTab4.setVisible(not estado)
+            #     args.labelTiempoTab4.setVisible(not estado)
+            #     args.labelRtaOKTab4.setVisible(not estado)
