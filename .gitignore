@@ -1,6 +1,7 @@
 *.dat
 *.dat_BKP
 *.dat_OLD
+*.dat_SANT
 *.ico
 *.spec
 *.config

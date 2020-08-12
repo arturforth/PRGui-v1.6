@@ -38,12 +38,12 @@ class Ui_MainWindow:
         self.ConfigurationBAP3GroupBox.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.ConfigurationBAP3GroupBox.setObjectName('ConfigurationBAP3GroupBox')
 
-        self.agregarBotonConfig = QtWidgets.QPushButton(self.ConfigurationBAP3GroupBox)
-        self.agregarBotonConfig.setGeometry(QtCore.QRect(20, 30, 40, 30))
-        self.agregarBotonConfig.setObjectName('AgregarBotonConfig')
-        self.agregarBotonConfig.setFont(self.newfont)
+        self.agregarBotonTab1 = QtWidgets.QPushButton(self.ConfigurationBAP3GroupBox)
+        self.agregarBotonTab1.setGeometry(QtCore.QRect(20, 30, 40, 30))
+        self.agregarBotonTab1.setObjectName('agregarBotonTab1')
+        self.agregarBotonTab1.setFont(self.newfont)
         # self.iconoBotonConfig = QtGui.QIcon('resources/Sirena.png')
-        # self.agregarBotonConfig.setIcon(self.iconoBotonConfig)
+        # self.agregarBotonTab1.setIcon(self.iconoBotonConfig)
 
         self.agregarEventoConfig = QtWidgets.QPushButton(self.ConfigurationBAP3GroupBox)
         self.agregarEventoConfig.setGeometry(QtCore.QRect(65, 30, 40, 30))
@@ -140,7 +140,7 @@ class Ui_MainWindow:
         self.comboBox2Config.setItemText(1, "ENCENDIDA")
         self.comboBox2Config.setItemText(2, "APAGADA")
 
-        self.agregarBotonConfig.setText('+B')
+        self.agregarBotonTab1.setText('+B')
         self.agregarEventoConfig.setText('+E')
         self.removerEventoConfig.setText('E')
         self.removerBotonConfig.setText('B')
