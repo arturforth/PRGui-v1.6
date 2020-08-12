@@ -34,27 +34,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createConfigurationBAP3GroupBox()
 
         self.listaTabs.itemChanged.connect(lambda: self.ModelBAP.setIdTabsConfig(self.listaTabs))
-        self.listaBotonesConfig.itemChanged.connect(lambda: self.ModelBAP.setIdBotonesConfig(self.listaBotonesConfig))
+        self.listaBotonesTab1.itemChanged.connect(lambda: self.ModelBAP.setIdBotonesConfig(self.listaBotonesTab1))
 
-        self.agregarEventoTab1.clicked.connect(lambda: self.ModelBAP.agregarEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.agregarBotonTab1.clicked.connect(lambda: self.ModelBAP.agregarBotonConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.removerEventoTab1.clicked.connect(lambda: self.ModelBAP.removerEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.removerBotonTab1.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesConfig, self))
+        self.agregarEventoTab1.clicked.connect(lambda: self.ModelBAP.agregarEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.agregarBotonTab1.clicked.connect(lambda: self.ModelBAP.agregarBotonConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.removerEventoTab1.clicked.connect(lambda: self.ModelBAP.removerEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.removerBotonTab1.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesTab1, self))
 
         self.guardarTab1.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
         # Edita Accion
-        self.comboBox1Config.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.comboBox1Tab1.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita Salida
-        self.spinBox1Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.spinBox1Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita Tiempo
-        self.spinBox2Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.spinBox2Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita RespuestaOK
-        self.comboBox2Config.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.comboBox2Config.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
 
         # Carga los eventos disponibles cuando se selecciona un boton.
-        self.listaBotonesConfig.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventosConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.listaEventosConfig.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.listaBotonesTab1.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventosConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.listaEventosTab1.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
 
         # OutsNum
         self.spinBoxOutsNumTab1.editingFinished.connect(lambda: self.ModelBAP.setOutsNumConfig(self.spinBoxOutsNumTab1))
@@ -297,7 +297,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2)     # BAP2
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, 'BAP3')  # BAP3
         self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 tab 4
-        self.ModelBAP.loadConfiguration(self.listaTabs, self.listaBotonesConfig, self.listaEventosConfig, self)  # Configuration tab 1
+        self.ModelBAP.loadConfiguration(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Configuration tab 1
         self.ModelCON.loadDat(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON)
         self.ModelKAN.loadDat(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN)
 

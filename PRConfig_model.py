@@ -443,7 +443,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                             break
 
         if listaBotones.count() == 0:
-            self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args)
+            self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args)
             # self.cargarBotones(args.listaTabs, args.listaBotones, None, args)
             estado = True
         else:
@@ -781,7 +781,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 # Esta el tag Botones pero no contiene elementos.
                 else:
                     # Si la BAP3 seleccionada no contiene botones, se cargan los botones del tag "Configuration"
-                    self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args, itemEdit=False)
+                    self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
                     break
 
         self.__setDisabled(listaBotones, listaEventos, botones, args)
@@ -900,8 +900,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                         return
                                     elif self.root[i][j][selBoton][k][selEvento].tag == 'Evento':
                                         try:
-                                            self.root[i][j][selBoton][k][selEvento].attrib[
-                                                'Accion'] = args.comboBox1Config.currentText()
+                                            self.root[i][j][selBoton][k][selEvento].attrib['Accion'] = args.comboBox1Tab1.currentText()
                                         except KeyError:
                                             pass
                                         try:
@@ -951,8 +950,8 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         if listaBotones.count() == 0:
             estado = True
 
-            args.listaEventosConfig.clear()
-            args.listaEventosConfig.setDisabled(estado)
+            args.listaEventosTab1.clear()
+            args.listaEventosTab1.setDisabled(estado)
             args.removerBotonTab4.setDisabled(estado)
             args.removerEventoTab4.setDisabled(estado)
             args.agregarEventoTab4.setDisabled(estado)
@@ -998,7 +997,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
             args.listaEventosTab4.setDisabled(estado)
             args.removerEventoConfig.setDisabled(estado)
-            args.comboBox1Config.setDisabled(estado)
+            args.comboBox1Tab1.setDisabled(estado)
             args.spinBox1Config.setDisabled(estado)
             args.spinBox2Config.setDisabled(estado)
             args.comboBox2Config.setDisabled(estado)
@@ -1042,7 +1041,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
         estado = False
-        args.listaEventosConfig.setDisabled(estado)
+        args.listaEventosTab1.setDisabled(estado)
         args.agregarEventoTab1.setDisabled(estado)
         args.removerEventoTab1.setDisabled(estado)
         args.removerBotonTab1.setDisabled(estado)
@@ -1093,7 +1092,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         args.agregarEventoTab1.setDisabled(estado)
         # args.listaEventosTab4.setDisabled(estado)
-        args.comboBox1Config.setDisabled(estado)
+        args.comboBox1Tab1.setDisabled(estado)
         args.spinBox1Config.setDisabled(estado)
         args.spinBox2Config.setDisabled(estado)
         args.comboBox2Config.setDisabled(estado)
@@ -1162,7 +1161,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
                                             # Modifica tab1
                                             if tab1 is True:
-                                                args.comboBox1Config.setCurrentText(accion)
+                                                args.comboBox1Tab1.setCurrentText(accion)
                                                 args.spinBox1Config.setValue(int(salida))
                                                 args.spinBox2Config.setValue(int(tiempo))
                                                 args.comboBox2Config.setCurrentText(respuestaok)
