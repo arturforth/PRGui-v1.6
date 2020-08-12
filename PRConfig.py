@@ -36,12 +36,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listaTabs.itemChanged.connect(lambda: self.ModelBAP.setIdTabsConfig(self.listaTabs))
         self.listaBotonesConfig.itemChanged.connect(lambda: self.ModelBAP.setIdBotonesConfig(self.listaBotonesConfig))
 
-        self.agregarEventoConfig.clicked.connect(lambda: self.ModelBAP.agregarEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.agregarEventoTab1.clicked.connect(lambda: self.ModelBAP.agregarEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
         self.agregarBotonTab1.clicked.connect(lambda: self.ModelBAP.agregarBotonConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.removerEventoConfig.clicked.connect(lambda: self.ModelBAP.removerEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
-        self.removerBotonConfig.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesConfig, self))
+        self.removerEventoTab1.clicked.connect(lambda: self.ModelBAP.removerEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
+        self.removerBotonTab1.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesConfig, self))
 
-        self.guardarConfig.clicked.connect(lambda: self.ModelBAP.guardarCambios())
+        self.guardarTab1.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
         # Edita Accion
         self.comboBox1Config.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
@@ -57,8 +57,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listaEventosConfig.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventoConfig(self.listaBotonesConfig, self.listaEventosConfig, self))
 
         # OutsNum
-        self.spinBoxOutsNumConfig.editingFinished.connect(lambda: self.ModelBAP.setOutsNumConfig(self.spinBoxOutsNumConfig))
-        self.spinBoxOutsNumConfig.valueChanged.connect(lambda: self.ModelBAP.setOutsNumConfig(self.spinBoxOutsNumConfig))
+        self.spinBoxOutsNumTab1.editingFinished.connect(lambda: self.ModelBAP.setOutsNumConfig(self.spinBoxOutsNumTab1))
+        self.spinBoxOutsNumTab1.valueChanged.connect(lambda: self.ModelBAP.setOutsNumConfig(self.spinBoxOutsNumTab1))
 
         # TAB 2
         self.createConfigBAPGroupBox()

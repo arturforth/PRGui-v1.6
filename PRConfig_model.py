@@ -126,7 +126,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.root[i][j].attrib['OutsNum'] = '0'
                             outsnum = '0'
 
-                        args.spinBoxOutsNumConfig.setValue(int(outsnum))
+                        args.spinBoxOutsNumTab1.setValue(int(outsnum))
 
                     if self.root[i][j].tag == 'Tabs':
                         for k in range(len(self.root[i][j])):
@@ -1005,7 +1005,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Agregar Botones tab 1
     def agregarBotonConfig(self, listaBotones, listaEventos, args):
-        # print('agregarBotonConfig')
+        # print('agregarEventoConfig')
         self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
         rutaImagenBoton, tipos = QFileDialog.getOpenFileName(self, 'Abrir imagen', 'resources/', 'Image Files (*.png *.jpg *.bmp)')  # Ruta del archivo imagen
 
@@ -1043,9 +1043,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
         estado = False
         args.listaEventosConfig.setDisabled(estado)
-        args.agregarEventoConfig.setDisabled(estado)
-        args.removerEventoConfig.setDisabled(estado)
-        args.removerBotonConfig.setDisabled(estado)
+        args.agregarEventoTab1.setDisabled(estado)
+        args.removerEventoTab1.setDisabled(estado)
+        args.removerBotonTab1.setDisabled(estado)
 
     # Agregar Evento en el tag Configuration tab 1
     def agregarEventoConfig(self, listaBotones, listaEventos, args):
@@ -1081,7 +1081,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                 listaEventos.addItem(item)
 
                                 # Habilita el boton por las dudas.
-                                args.removerEventoConfig.setDisabled(False)
+                                args.removerEventoTab1.setDisabled(False)
                                 listaEventos.setCurrentRow(cant)
                                 self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
                                 break
@@ -1091,7 +1091,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
         estado = False
 
-        args.agregarEventoConfig.setDisabled(estado)
+        args.agregarEventoTab1.setDisabled(estado)
         # args.listaEventosTab4.setDisabled(estado)
         args.comboBox1Config.setDisabled(estado)
         args.spinBox1Config.setDisabled(estado)
@@ -1245,10 +1245,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.modificado = True
                     return
 
-    def setOutsNumConfig(self, spinBoxOutsNumConfig):
+    def setOutsNumConfig(self, spinBoxOutsNum):
         # print('setOutsNumConfig')
 
-        outsnum = spinBoxOutsNumConfig.text()
+        outsnum = spinBoxOutsNum.text()
 
         for i in range(len(self.root)):
             if self.root[i].tag == 'Configuration':
