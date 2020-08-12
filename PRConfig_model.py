@@ -1227,18 +1227,19 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.root[i].tag == 'Configuration':
                 for j in range(len(self.root[i])):
                     if self.root[i][j].tag == 'Botones':
-                        for k in range(len(self.root[i][j][selBoton])):
-                            if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                if len(self.root[i][j][selBoton][k]) != 0:
-                                    for m in range(len(self.root[i][j][selBoton][k])):
-                                        cant = listaEventos.count()
-                                        item = QtWidgets.QListWidgetItem()
-                                        item.setText('Evento {0}'.format(cant + 1))
-                                        listaEventos.addItem(item)
-                                        listaEventos.setCurrentRow(0)
-                                    return
-                                else:
-                                    return
+                        if len(self.root[i][j]) != 0:
+                            for k in range(len(self.root[i][j][selBoton])):
+                                if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                    if len(self.root[i][j][selBoton][k]) != 0:
+                                        for m in range(len(self.root[i][j][selBoton][k])):
+                                            cant = listaEventos.count()
+                                            item = QtWidgets.QListWidgetItem()
+                                            item.setText('Evento {0}'.format(cant + 1))
+                                            listaEventos.addItem(item)
+                                            listaEventos.setCurrentRow(0)
+                                        return
+                                    else:
+                                        return
 
     # Carga el evento seleccionado en el tab 1. El parametro tab1 es para poder cargar datos en tab1 o tab4.
     def cargarEventoConfig(self, listaBotones, listaEventos, args, tab1=True):
@@ -1253,42 +1254,43 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.root[i].tag == 'Configuration':
                 for j in range(len(self.root[i])):
                     if self.root[i][j].tag == 'Botones':
-                        if self.root[i][j][selBoton].tag == 'Boton':
-                            for k in range(len(self.root[i][j][selBoton])):
-                                if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                    if len(self.root[i][j][selBoton][k]) == 0:  # El boton no tiene eventos cargados.
-                                        return
-                                    elif self.root[i][j][selBoton][k][selEvento].tag == 'Evento':
-                                        try:
-                                            accion = self.root[i][j][selBoton][k][selEvento].attrib['Accion']
-                                        except KeyError:
-                                            accion = ''
-                                        try:
-                                            salida = self.root[i][j][selBoton][k][selEvento].attrib['Salida']
-                                        except KeyError:
-                                            salida = 0
-                                        try:
-                                            tiempo = self.root[i][j][selBoton][k][selEvento].attrib['Tiempo']
-                                        except KeyError:
-                                            tiempo = 0
-                                        try:
-                                            respuestaok = self.root[i][j][selBoton][k][selEvento].attrib['RespuestaOK']
-                                        except KeyError:
-                                            respuestaok = ''
+                        if len(self.root[i][j]) != 0:
+                            if self.root[i][j][selBoton].tag == 'Boton':
+                                for k in range(len(self.root[i][j][selBoton])):
+                                    if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                        if len(self.root[i][j][selBoton][k]) == 0:  # El boton no tiene eventos cargados.
+                                            return
+                                        elif self.root[i][j][selBoton][k][selEvento].tag == 'Evento':
+                                            try:
+                                                accion = self.root[i][j][selBoton][k][selEvento].attrib['Accion']
+                                            except KeyError:
+                                                accion = ''
+                                            try:
+                                                salida = self.root[i][j][selBoton][k][selEvento].attrib['Salida']
+                                            except KeyError:
+                                                salida = 0
+                                            try:
+                                                tiempo = self.root[i][j][selBoton][k][selEvento].attrib['Tiempo']
+                                            except KeyError:
+                                                tiempo = 0
+                                            try:
+                                                respuestaok = self.root[i][j][selBoton][k][selEvento].attrib['RespuestaOK']
+                                            except KeyError:
+                                                respuestaok = ''
 
-                                        # Modifica tab1
-                                        if tab1 is True:
-                                            args.comboBox1Config.setCurrentText(accion)
-                                            args.spinBox1Config.setValue(int(salida))
-                                            args.spinBox2Config.setValue(int(tiempo))
-                                            args.comboBox2Config.setCurrentText(respuestaok)
-                                        # Modifica tab4 cuando hay que cargar los botones por defecto de Configuration.
-                                        else:
-                                            args.comboBox1Tab4.setCurrentText(accion)
-                                            args.spinBox1Tab4.setValue(int(salida))
-                                            args.spinBox2Tab4.setValue(int(tiempo))
-                                            args.comboBox2Tab4.setCurrentText(respuestaok)
-                                        return
+                                            # Modifica tab1
+                                            if tab1 is True:
+                                                args.comboBox1Config.setCurrentText(accion)
+                                                args.spinBox1Config.setValue(int(salida))
+                                                args.spinBox2Config.setValue(int(tiempo))
+                                                args.comboBox2Config.setCurrentText(respuestaok)
+                                            # Modifica tab4 cuando hay que cargar los botones por defecto de Configuration.
+                                            else:
+                                                args.comboBox1Tab4.setCurrentText(accion)
+                                                args.spinBox1Tab4.setValue(int(salida))
+                                                args.spinBox2Tab4.setValue(int(tiempo))
+                                                args.comboBox2Tab4.setCurrentText(respuestaok)
+                                            return
 
     # Cambio de id tabs tab 1
     def setIdTabsConfig(self, listaTabs):
@@ -1507,52 +1509,53 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             return None
 
     def __setDisabled(self, listaEventos, listaBotones, botones, args):
+
         # cargarBotones
         if botones is False:
             if listaEventos.count() == 0:
                 estado = True
+                print('True')
+                # args.agregarEventoTab4.setDisabled(estado)
+                # args.removerEventoTab4.setDisabled(estado)
+                # args.removerBotonTab4.setDisabled(estado)
+                #
+                # args.comboBox1Tab4.setDisabled(estado)
+                # args.spinBox1Tab4.setDisabled(estado)
+                # args.spinBox2Tab4.setDisabled(estado)
+                # args.comboBox2Tab4.setDisabled(estado)
 
-                listaEventos.setDisabled(estado)
-                args.agregarEventoTab4.setDisabled(estado)
-                args.removerEventoTab4.setDisabled(estado)
-                args.removerBotonTab4.setDisabled(estado)
-
-                args.comboBox1Tab4.setDisabled(estado)
-                args.spinBox1Tab4.setDisabled(estado)
-                args.spinBox2Tab4.setDisabled(estado)
-                args.comboBox2Tab4.setDisabled(estado)
-
-                args.comboBox1Tab4.setVisible(not estado)
-                args.spinBox1Tab4.setVisible(not estado)
-                args.spinBox2Tab4.setVisible(not estado)
-                args.comboBox2Tab4.setVisible(not estado)
-
-                args.labelAccionTab4.setVisible(not estado)
-                args.labelSalidaTab4.setVisible(not estado)
-                args.labelTiempoTab4.setVisible(not estado)
-                args.labelRtaOKTab4.setVisible(not estado)
             else:
                 estado = False
+                print('False')
+                # args.agregarEventoTab4.setDisabled(not estado)
+                # args.removerEventoTab4.setDisabled(not estado)
+                # args.removerBotonTab4.setDisabled(not estado)
+                #
+                # args.comboBox1Tab4.setDisabled(not estado)
+                # args.spinBox1Tab4.setDisabled(not estado)
+                # args.spinBox2Tab4.setDisabled(not estado)
+                # args.comboBox2Tab4.setDisabled(not estado)
 
-                listaEventos.setDisabled(estado)
-                args.agregarEventoTab4.setDisabled(not estado)
-                args.removerEventoTab4.setDisabled(not estado)
-                args.removerBotonTab4.setDisabled(not estado)
+            listaEventos.setDisabled(estado)
 
-                args.comboBox1Tab4.setDisabled(not estado)
-                args.spinBox1Tab4.setDisabled(not estado)
-                args.spinBox2Tab4.setDisabled(not estado)
-                args.comboBox2Tab4.setDisabled(not estado)
+            args.agregarEventoTab4.setDisabled(True)
+            args.removerEventoTab4.setDisabled(True)
+            args.removerBotonTab4.setDisabled(True)
 
-                args.comboBox1Tab4.setVisible(not estado)
-                args.spinBox1Tab4.setVisible(not estado)
-                args.spinBox2Tab4.setVisible(not estado)
-                args.comboBox2Tab4.setVisible(not estado)
+            args.comboBox1Tab4.setDisabled(True)
+            args.spinBox1Tab4.setDisabled(True)
+            args.spinBox2Tab4.setDisabled(True)
+            args.comboBox2Tab4.setDisabled(True)
 
-                args.labelAccionTab4.setVisible(not estado)
-                args.labelSalidaTab4.setVisible(not estado)
-                args.labelTiempoTab4.setVisible(not estado)
-                args.labelRtaOKTab4.setVisible(not estado)
+            args.comboBox1Tab4.setVisible(not estado)
+            args.spinBox1Tab4.setVisible(not estado)
+            args.spinBox2Tab4.setVisible(not estado)
+            args.comboBox2Tab4.setVisible(not estado)
+
+            args.labelAccionTab4.setVisible(not estado)
+            args.labelSalidaTab4.setVisible(not estado)
+            args.labelTiempoTab4.setVisible(not estado)
+            args.labelRtaOKTab4.setVisible(not estado)
 
             # Cuando no hay botones en Configuration
             # if listaBotones.count() == 0:
