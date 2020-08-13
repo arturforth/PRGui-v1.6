@@ -260,6 +260,24 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.root[posdispositivo][numlinea-2].text = linea.text()
 
+    # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
+    def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
+        # print('readTag')
+        for i in range(len(root)):
+            try:
+                if name == (root[i].attrib['Name']):
+                    for j in range(len(root[i])):
+                        for k in range(len(root[i][j])):
+                            if root[i][j][k].tag == etiqueta1:
+                                if etiqueta2 is None:   # No hay etiqueta2 => los tags tienen atributos
+                                    return root[i][j][k].attrib[atributo]
+                                for m in range(len(root[i][j][k])):
+                                    if root[i][j][k][m].tag == etiqueta2:   # Si hay etiqueta2 => los tags tienen texto
+                                        return root[i][j][k][m].text
+                                return -1     # etiqueta2 no coincide con ningun tag del archivo
+            except KeyError:    # El tag no posee atributo 'Name'
+                continue
+
     # Escribe val en el tag indicado en los parametros. Devuelve -1 si no encuentra el tag.
     def writeTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None, val=None):
         # print('writeTag')
@@ -754,61 +772,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # listaEventos.setCurrentRow(cant)
 
-    # Setea los parametros del evento seleccionado
-    def setEvento(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('setEvento')
-        self.modificado = True
-        selBAP3 = listaBAP3.currentRow()
-        selBoton = listaBotones.currentRow()
-        selEvento = listaEventos.currentRow()
-
-        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
-            return
-
-        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
-
-        for i in range(len(self.root[posBAP3])):  # Todos los elementos dentro de la BAP
-            if self.root[posBAP3][i].tag == 'Botones':
-                if len(self.root[posBAP3][i]) != 0:  # Hay botones cargados.
-                    for j in range(len(self.root[posBAP3][i][selBoton])):  # Todos los elementos dentro de cada boton.
-                        if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
-                            if len(self.root[posBAP3][i][selBoton][j]) == 0:  # El boton no tiene eventos cargados.
-                                break
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Accion'] = args.comboBox1Tab4.currentText()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Salida'] = args.spinBox1Tab4.text()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Tiempo'] = args.spinBox2Tab4.text()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['RespuestaOK'] = args.comboBox2Tab4.currentText()
-                            except KeyError:
-                                pass
-
-    # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
-    def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
-        # print('readTag')
-        for i in range(len(root)):
-            try:
-                if name == (root[i].attrib['Name']):
-                    for j in range(len(root[i])):
-                        for k in range(len(root[i][j])):
-                            if root[i][j][k].tag == etiqueta1:
-                                if etiqueta2 is None:   # No hay etiqueta2 => los tags tienen atributos
-                                    return root[i][j][k].attrib[atributo]
-                                for m in range(len(root[i][j][k])):
-                                    if root[i][j][k][m].tag == etiqueta2:   # Si hay etiqueta2 => los tags tienen texto
-                                        return root[i][j][k][m].text
-                                return -1     # etiqueta2 no coincide con ningun tag del archivo
-            except KeyError:    # El tag no posee atributo 'Name'
-                continue
-
     #  Habilita o deshabilita el panel derecho de configuracion. Atributo 'enabled'
     def habilitar(self, lista, checkbox, l1, l2, l3, l4, l5, l6, l7, tipoBAP='BAP2'):
         # print('habilitar')
@@ -1180,6 +1143,43 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                         except KeyError:
                                             pass
 
+    # Setea los parametros del evento seleccionado
+    def setEvento(self, listaBAP3, listaBotones, listaEventos, args):
+        # print('setEvento')
+        self.modificado = True
+        selBAP3 = listaBAP3.currentRow()
+        selBoton = listaBotones.currentRow()
+        selEvento = listaEventos.currentRow()
+
+        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
+            return
+
+        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+
+        for i in range(len(self.root[posBAP3])):  # Todos los elementos dentro de la BAP
+            if self.root[posBAP3][i].tag == 'Botones':
+                if len(self.root[posBAP3][i]) != 0:  # Hay botones cargados.
+                    for j in range(len(self.root[posBAP3][i][selBoton])):  # Todos los elementos dentro de cada boton.
+                        if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
+                            if len(self.root[posBAP3][i][selBoton][j]) == 0:  # El boton no tiene eventos cargados.
+                                break
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Accion'] = args.comboBox1Tab4.currentText()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Salida'] = args.spinBox1Tab4.text()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Tiempo'] = args.spinBox2Tab4.text()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['RespuestaOK'] = args.comboBox2Tab4.currentText()
+                            except KeyError:
+                                pass
+
     # Cambio de id tabs tab 1
     def setIdTabsConfig(self, listaTabs):
         # print('setIdTabsConfig')
@@ -1267,6 +1267,21 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.modificado = True
                         return
 
+    def setOutsNumBAP3(self, listaBAP3, spinBoxOutsNumBAP3):
+        # print('setOutsNumBAP3')
+        self.modificado = True
+
+        selBAP3 = listaBAP3.currentRow()  # Posicion en la lista de la BAP3 seleccionada
+
+        if selBAP3 == -1:
+            return
+
+        outsnum = spinBoxOutsNumBAP3.text()
+
+        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+
+        self.root[posBAP3].attrib['OutsNum'] = outsnum
+
     # Metodo para cambiar entre la configuracion por defecto y la configuracion particular de las BAP3. No se usa.
     def configToBAP(self, args):
         if args.checkBoxPlacas.isChecked() is True:
@@ -1295,21 +1310,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             shutil.rmtree(carpeta)
         except FileNotFoundError:
             pass
-
-    def setOutsNumPlacas(self, listaBAP3, spinBoxOutsNumBAP3):
-        # print('setOutsNumPlacas')
-        self.modificado = True
-
-        selBAP3 = listaBAP3.currentRow()  # Posicion en la lista de la BAP3 seleccionada
-
-        if selBAP3 == -1:
-            return
-
-        outsnum = spinBoxOutsNumBAP3.text()
-
-        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
-
-        self.root[posBAP3].attrib['OutsNum'] = outsnum
 
     # Se actualiza tab 4 cuando se lo selecciona.
     def updateTab(self, tabs, listaBAP3, listaBotones, listaEventos, args):

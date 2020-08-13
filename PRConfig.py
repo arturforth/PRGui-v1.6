@@ -122,8 +122,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.checkBoxBAP3.stateChanged.connect(lambda: self.ModelBAP.habilitar(self.listWidgetPlacasBAP3, self.checkBoxBAP3, self.lineEdit1BAP3, self.lineEdit2BAP3, self.lineEdit3BAP3, self.lineEdit4BAP3, self.lineEdit5BAP3, self.lineEdit6BAP3, self.lineEdit7BAP3, 'BAP3'))
 
         # Cuando se modifica el spinbox OutsNum
-        self.spinBoxOutsNumBAP3.editingFinished.connect(lambda: self.ModelBAP.setOutsNumPlacas(self.listWidgetPlacasBAP3, self.spinBoxOutsNumBAP3))
-        self.spinBoxOutsNumBAP3.valueChanged.connect(lambda: self.ModelBAP.setOutsNumPlacas(self.listWidgetPlacasBAP3, self.spinBoxOutsNumBAP3))
+        self.spinBoxOutsNumBAP3.editingFinished.connect(lambda: self.ModelBAP.setOutsNumBAP3(self.listWidgetPlacasBAP3, self.spinBoxOutsNumBAP3))
+        self.spinBoxOutsNumBAP3.valueChanged.connect(lambda: self.ModelBAP.setOutsNumBAP3(self.listWidgetPlacasBAP3, self.spinBoxOutsNumBAP3))
 
         # Cada vez que se selecciona una placa BAP3 de la lista.
         self.listWidgetPlacasBAP3.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarItem(
