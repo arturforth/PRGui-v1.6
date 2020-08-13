@@ -109,8 +109,8 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         lista.setCurrentRow(0)
 
     # Carga tabs y botones del tab 1 cuando inicia el programa
-    def loadConfiguration(self, listaTabs, listaBotones, listaEventos, args, itemEdit=True):
-        # print('loadConfiguration')
+    def loadDatConfig(self, listaTabs, listaBotones, listaEventos, args, itemEdit=True):
+        # print('loadDatConfig')
 
         # Borra todos los elementos de las listas previamente
         listaTabs.clear()
@@ -280,60 +280,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             except KeyError:    # El tag no posee atributo 'Name'
                 continue
 
-    def setEvento(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('setEvento')
-        self.modificado = True
-        selBAP3 = listaBAP3.currentRow()
-        selBoton = listaBotones.currentRow()
-        selEvento = listaEventos.currentRow()
-
-        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
-            return
-
-        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
-
-        for i in range(len(self.root[posBAP3])):  # Todos los elementos dentro de la BAP
-            if self.root[posBAP3][i].tag == 'Botones':
-                if len(self.root[posBAP3][i]) != 0:  # Hay botones cargados.
-                    for j in range(len(self.root[posBAP3][i][selBoton])):  # Todos los elementos dentro de cada boton.
-                        if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
-                            if len(self.root[posBAP3][i][selBoton][j]) == 0:  # El boton no tiene eventos cargados.
-                                break
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Accion'] = args.comboBox1Tab4.currentText()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Salida'] = args.spinBox1Tab4.text()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Tiempo'] = args.spinBox2Tab4.text()
-                            except KeyError:
-                                pass
-                            try:
-                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['RespuestaOK'] = args.comboBox2Tab4.currentText()
-                            except KeyError:
-                                pass
-
-    # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
-    def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
-        # print('readTag')
-        for i in range(len(root)):
-            try:
-                if name == (root[i].attrib['Name']):
-                    for j in range(len(root[i])):
-                        for k in range(len(root[i][j])):
-                            if root[i][j][k].tag == etiqueta1:
-                                if etiqueta2 is None:   # No hay etiqueta2 => los tags tienen atributos
-                                    return root[i][j][k].attrib[atributo]
-                                for m in range(len(root[i][j][k])):
-                                    if root[i][j][k][m].tag == etiqueta2:   # Si hay etiqueta2 => los tags tienen texto
-                                        return root[i][j][k][m].text
-                                return -1     # etiqueta2 no coincide con ningun tag del archivo
-            except KeyError:    # El tag no posee atributo 'Name'
-                continue
-
     # Boton "agregar". Agrega el dispositivo correspondiente al final de cada lista.
     def agregarDisp(self, lista, configgroupbox, labels, tipoPlaca='BAP2', args=None):
         # print('agregarDisp')
@@ -387,134 +333,100 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             # args.spinBox2Tab4.setVisible(not estado)
             # args.comboBox2Tab4.setVisible(not estado)
 
-    # Boton remover. Elimina los dispositivos de cada lista.
-    def removerDisp(self, lista, configgroupbox, removerbutton, tipoBAP='BAP2'):
-        # print('removerDisp')
-
-        seldispositivo = lista.currentRow()
-
-        posdispositivo = self.__findPosBAP(seldispositivo, tipoBAP)
-
-        mensaje = QMessageBox()
-        mensaje.setText('¿Está seguro de que desea eliminar este dispositivo?')
-        mensaje.setWindowTitle('Eliminar dispositivo')
-        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
-        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
-        mensaje.exec_()
-
-        if mensaje.clickedButton() == eliminarButton:
-            lista.takeItem(seldispositivo)     # Borra el dispositivo de la lista.
-
-            child = self.root.getchildren()[posdispositivo]
-            self.root.remove(child)
-            self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-
-        # Cuando no hay dispositivos cargados, se deshabilita el panel derecho y el boton remover.
-        if lista.count() == 0:
-            removerbutton.setDisabled(True)
-            configgroupbox.setDisabled(True)
-
-    # Elimina Boton de Configuracion Placas BAP3 tab 4
-    def removerBoton(self, listaBAP3, listaBotones, args):
-        # print('removerBoton')
+    # Agregar Botones tab 1
+    def agregarBotonConfig(self, listaBotones, listaEventos, args):
+        # print('agregarEventoConfig')
         self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+        rutaImagenBoton, tipos = QFileDialog.getOpenFileName(self, 'Abrir imagen', 'resources/', 'Image Files (*.png *.jpg *.bmp)')  # Ruta del archivo imagen
 
-        selBAP3 = listaBAP3.currentRow()
-        selBoton = listaBotones.currentRow()
-
-        if selBAP3 == -1 or selBoton == -1:
+        if not rutaImagenBoton:
             return
 
-        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+        nombreImagenBoton = self.__getNombreImagenBoton(rutaImagenBoton)  # Obtiene el nombre del archivo imagen
 
-        for i in range(len(self.root[posBAP3])):  # Todos los botones
-            if self.root[posBAP3][i].tag == 'Botones':
-                if len(self.root[posBAP3][i]) != 0:
-                    if self.root[posBAP3][i][selBoton].tag == 'Boton':
-                        mensaje = QMessageBox()
-                        mensaje.setText('¿Está seguro de que desea eliminar este boton?')
-                        mensaje.setWindowTitle('Eliminar boton')
-                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
-                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
-                        mensaje.exec_()
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        boton = self.__botonGen(self.root[i][j], nombreImagenBoton)
+                        self.root[i][j].append(boton)
 
-                        if mensaje.clickedButton() == eliminarButton:
-                            listaBotones.takeItem(selBoton)  # Borra el dispositivo de la lista.
+                        cant = listaBotones.count()
 
-                            child = self.root[posBAP3][i].getchildren()[selBoton]
-                            self.root[posBAP3][i].remove(child)
-                            break
+                        if cant == 0:  # No hay ningun dispositivo en la lista.
+                            nombre = 'Boton {0}:'.format((cant + 1))
+                        else:
+                            nombre = (listaBotones.item(cant - 1)).text()
+                            numero = int(nombre[len('Boton'):nombre.find(':')])
+                            numero = str(numero + 1)
+                            nombre = nombre[0:len('Boton')] + ' ' + numero + ':'
 
-        if listaBotones.count() == 0:
-            self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args)
-            # self.cargarBotones(args.listaTabs, args.listaBotones, None, args)
-            estado = True
-        else:
-            estado = False
+                        item = QtWidgets.QListWidgetItem()
+                        item.setText(nombre)
+                        item.setToolTip(nombreImagenBoton)
+                        item.setFlags(int(item.flags()) | QtCore.Qt.ItemIsEditable)
+                        listaBotones.addItem(item)
+                        listaBotones.setCurrentRow(cant)
 
+                        break
+
+        # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
+        estado = False
+        args.listaEventosTab1.setDisabled(estado)
+        args.agregarEventoTab1.setDisabled(estado)
+        args.removerEventoTab1.setDisabled(estado)
+        args.removerBotonTab1.setDisabled(estado)
+
+    # Agregar Evento en el tag Configuration tab 1
+    def agregarEventoConfig(self, listaBotones, listaEventos, args):
+        # print('agregarEventoConfig')
+
+        selBoton = listaBotones.currentRow()
+        cant = listaEventos.count()
+
+        if selBoton == -1:
+            return
+
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        for k in range(len(self.root[i][j][selBoton])):
+                            if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                # Agrega el evento al archivo .dat
+                                evento = self.__eventoGen(self.root[i][j][selBoton][k])
+                                self.root[i][j][selBoton][k].append(evento)
+
+                                if cant == 0:  # No hay ningun dispositivo cargado en el archivo.
+                                    nombre = 'Evento {0}'.format((cant + 1))
+                                else:
+                                    nombre = (listaEventos.item(cant - 1)).text()
+                                    numero = int(nombre[len('Evento'):])
+                                    numero = str(numero + 1)
+                                    nombre = nombre[0:len('Evento')] + ' ' + numero
+
+                                    # Agrega el evento a la lista
+                                item = QtWidgets.QListWidgetItem()
+                                item.setText(nombre)
+                                listaEventos.addItem(item)
+
+                                # Habilita el boton por las dudas.
+                                args.removerEventoTab1.setDisabled(False)
+                                listaEventos.setCurrentRow(cant)
+                                self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+                                break
+                        break
+                break
+
+        # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
+        estado = False
+
+        args.agregarEventoTab1.setDisabled(estado)
         # args.listaEventosTab4.setDisabled(estado)
-        args.removerBotonTab4.setDisabled(estado)
-        args.removerEventoTab4.setDisabled(estado)
-        args.agregarEventoTab4.setDisabled(estado)
-        args.comboBox1Tab4.setDisabled(estado)
-        args.spinBox1Tab4.setDisabled(estado)
-        args.spinBox2Tab4.setDisabled(estado)
-        args.comboBox2Tab4.setDisabled(estado)
-
-    # Elimina Evento de Configuracion Placas BAP3 tab4
-    def removerEvento(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('removerEvento')
-        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-
-        selBAP3 = listaBAP3.currentRow()
-        selBoton = listaBotones.currentRow()
-        selEvento = listaEventos.currentRow()
-
-        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
-            return
-
-        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
-
-        for i in range(len(self.root[posBAP3])):  # Todos los botones
-            if self.root[posBAP3][i].tag == 'Botones':
-                for j in range(len(self.root[posBAP3][i][selBoton])):
-                    if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
-                        mensaje = QMessageBox()
-                        mensaje.setText('¿Está seguro de que desea eliminar este evento?')
-                        mensaje.setWindowTitle('Eliminar evento')
-                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
-                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
-                        mensaje.exec_()
-
-                        if mensaje.clickedButton() == eliminarButton:
-                            listaEventos.takeItem(selEvento)  # Borra el dispositivo de la lista.
-
-                            child = self.root[posBAP3][i][selBoton][j].getchildren()[selEvento]
-                            self.root[posBAP3][i][selBoton][j].remove(child)
-                            break
-
-        if listaEventos.count() == 0:
-            # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
-            estado = True
-
-            # args.listaEventosTab4.setDisabled(estado)
-            args.removerEventoTab4.setDisabled(estado)
-            # args.comboBox1Tab4.setDisabled(estado)
-            # args.spinBox1Tab4.setDisabled(estado)
-            # args.spinBox2Tab4.setDisabled(estado)
-            # args.comboBox2Tab4.setDisabled(estado)
-
-            args.comboBox1Tab4.setVisible(not estado)
-            args.spinBox1Tab4.setVisible(not estado)
-            args.spinBox2Tab4.setVisible(not estado)
-            args.comboBox2Tab4.setVisible(not estado)
-
-            args.labelAccionTab4.setVisible(not estado)
-            args.labelSalidaTab4.setVisible(not estado)
-            args.labelTiempoTab4.setVisible(not estado)
-            args.labelRtaOKTab4.setVisible(not estado)
-
-        # listaEventos.setCurrentRow(cant)
+        args.comboBox1Tab1.setDisabled(estado)
+        args.spinBox1Tab1.setDisabled(estado)
+        args.spinBox2Tab1.setDisabled(estado)
+        args.comboBox2Tab1.setDisabled(estado)
 
     # Agrega un boton en Configuracion Placas BAP3 tab 4
     def agregarBoton(self, listaBAP3, listaBotones, listaEventos, args):
@@ -630,6 +542,273 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # listaEventos.setCurrentRow(cant)
 
+    # Boton remover. Elimina los dispositivos de cada lista.
+    def removerDisp(self, lista, configgroupbox, removerbutton, tipoBAP='BAP2'):
+        # print('removerDisp')
+
+        seldispositivo = lista.currentRow()
+
+        posdispositivo = self.__findPosBAP(seldispositivo, tipoBAP)
+
+        mensaje = QMessageBox()
+        mensaje.setText('¿Está seguro de que desea eliminar este dispositivo?')
+        mensaje.setWindowTitle('Eliminar dispositivo')
+        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
+        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
+        mensaje.exec_()
+
+        if mensaje.clickedButton() == eliminarButton:
+            lista.takeItem(seldispositivo)     # Borra el dispositivo de la lista.
+
+            child = self.root.getchildren()[posdispositivo]
+            self.root.remove(child)
+            self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
+        # Cuando no hay dispositivos cargados, se deshabilita el panel derecho y el boton remover.
+        if lista.count() == 0:
+            removerbutton.setDisabled(True)
+            configgroupbox.setDisabled(True)
+
+    # Elimina el boton seleccionado en tab1
+    def removerBotonConfig(self, listaBotones, args):
+        # print('removerBotonConfig')
+        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
+        selBoton = listaBotones.currentRow()
+
+        if selBoton == -1:
+            return
+
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        mensaje = QMessageBox()
+                        mensaje.setText('¿Está seguro de que desea eliminar este boton?')
+                        mensaje.setWindowTitle('Eliminar boton')
+                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
+                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
+                        mensaje.exec_()
+
+                        if mensaje.clickedButton() == eliminarButton:
+                            listaBotones.takeItem(selBoton)  # Borra el dispositivo de la lista.
+
+                            child = self.root[i][j].getchildren()[selBoton]
+                            self.root[i][j].remove(child)
+                            break
+
+        if listaBotones.count() == 0:
+            estado = True
+
+            args.listaEventosTab1.clear()
+            args.listaEventosTab1.setDisabled(estado)
+            args.removerBotonTab4.setDisabled(estado)
+            args.removerEventoTab4.setDisabled(estado)
+            args.agregarEventoTab4.setDisabled(estado)
+            args.comboBox1Tab4.setDisabled(estado)
+            args.spinBox1Tab4.setDisabled(estado)
+            args.spinBox2Tab4.setDisabled(estado)
+            args.comboBox2Tab4.setDisabled(estado)
+
+    # Elimina el evento seleccionado en tab1
+    def removerEventoConfig(self, listaBotones, listaEventos, args):
+        # print('removerEventoConfig')
+        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
+        selBoton = listaBotones.currentRow()
+        selEvento = listaEventos.currentRow()
+
+        if selBoton == -1 or selEvento == -1:
+            return
+
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        for k in range(len(self.root[i][j][selBoton])):
+                            if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                mensaje = QMessageBox()
+                                mensaje.setText('¿Está seguro de que desea eliminar este evento?')
+                                mensaje.setWindowTitle('Eliminar evento')
+                                eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
+                                noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
+                                mensaje.exec_()
+
+                                if mensaje.clickedButton() == eliminarButton:
+                                    listaEventos.takeItem(selEvento)  # Borra el dispositivo de la lista.
+
+                                    child = self.root[i][j][selBoton][k].getchildren()[selEvento]
+                                    self.root[i][j][selBoton][k].remove(child)
+                                    break
+
+        if listaEventos.count() == 0:
+            # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
+            estado = True
+
+            args.listaEventosTab4.setDisabled(estado)
+            args.removerEventoTab1.setDisabled(estado)
+            args.comboBox1Tab1.setDisabled(estado)
+            args.spinBox1Tab1.setDisabled(estado)
+            args.spinBox2Tab1.setDisabled(estado)
+            args.comboBox2Tab1.setDisabled(estado)
+
+    # Elimina Boton de Configuracion Placas BAP3 tab 4
+    def removerBoton(self, listaBAP3, listaBotones, args):
+        # print('removerBoton')
+        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
+        selBAP3 = listaBAP3.currentRow()
+        selBoton = listaBotones.currentRow()
+
+        if selBAP3 == -1 or selBoton == -1:
+            return
+
+        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+
+        for i in range(len(self.root[posBAP3])):  # Todos los botones
+            if self.root[posBAP3][i].tag == 'Botones':
+                if len(self.root[posBAP3][i]) != 0:
+                    if self.root[posBAP3][i][selBoton].tag == 'Boton':
+                        mensaje = QMessageBox()
+                        mensaje.setText('¿Está seguro de que desea eliminar este boton?')
+                        mensaje.setWindowTitle('Eliminar boton')
+                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
+                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
+                        mensaje.exec_()
+
+                        if mensaje.clickedButton() == eliminarButton:
+                            listaBotones.takeItem(selBoton)  # Borra el dispositivo de la lista.
+
+                            child = self.root[posBAP3][i].getchildren()[selBoton]
+                            self.root[posBAP3][i].remove(child)
+                            break
+
+        if listaBotones.count() == 0:
+            self.loadDatConfig(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args)
+            # self.cargarBotones(args.listaTabs, args.listaBotones, None, args)
+            estado = True
+        else:
+            estado = False
+
+        # args.listaEventosTab4.setDisabled(estado)
+        args.removerBotonTab4.setDisabled(estado)
+        args.removerEventoTab4.setDisabled(estado)
+        args.agregarEventoTab4.setDisabled(estado)
+        args.comboBox1Tab4.setDisabled(estado)
+        args.spinBox1Tab4.setDisabled(estado)
+        args.spinBox2Tab4.setDisabled(estado)
+        args.comboBox2Tab4.setDisabled(estado)
+
+    # Elimina Evento de Configuracion Placas BAP3 tab4
+    def removerEvento(self, listaBAP3, listaBotones, listaEventos, args):
+        # print('removerEvento')
+        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
+        selBAP3 = listaBAP3.currentRow()
+        selBoton = listaBotones.currentRow()
+        selEvento = listaEventos.currentRow()
+
+        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
+            return
+
+        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+
+        for i in range(len(self.root[posBAP3])):  # Todos los botones
+            if self.root[posBAP3][i].tag == 'Botones':
+                for j in range(len(self.root[posBAP3][i][selBoton])):
+                    if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
+                        mensaje = QMessageBox()
+                        mensaje.setText('¿Está seguro de que desea eliminar este evento?')
+                        mensaje.setWindowTitle('Eliminar evento')
+                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
+                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
+                        mensaje.exec_()
+
+                        if mensaje.clickedButton() == eliminarButton:
+                            listaEventos.takeItem(selEvento)  # Borra el dispositivo de la lista.
+
+                            child = self.root[posBAP3][i][selBoton][j].getchildren()[selEvento]
+                            self.root[posBAP3][i][selBoton][j].remove(child)
+                            break
+
+        if listaEventos.count() == 0:
+            # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
+            estado = True
+
+            # args.listaEventosTab4.setDisabled(estado)
+            args.removerEventoTab4.setDisabled(estado)
+            # args.comboBox1Tab4.setDisabled(estado)
+            # args.spinBox1Tab4.setDisabled(estado)
+            # args.spinBox2Tab4.setDisabled(estado)
+            # args.comboBox2Tab4.setDisabled(estado)
+
+            args.comboBox1Tab4.setVisible(not estado)
+            args.spinBox1Tab4.setVisible(not estado)
+            args.spinBox2Tab4.setVisible(not estado)
+            args.comboBox2Tab4.setVisible(not estado)
+
+            args.labelAccionTab4.setVisible(not estado)
+            args.labelSalidaTab4.setVisible(not estado)
+            args.labelTiempoTab4.setVisible(not estado)
+            args.labelRtaOKTab4.setVisible(not estado)
+
+        # listaEventos.setCurrentRow(cant)
+
+    # Setea los parametros del evento seleccionado
+    def setEvento(self, listaBAP3, listaBotones, listaEventos, args):
+        # print('setEvento')
+        self.modificado = True
+        selBAP3 = listaBAP3.currentRow()
+        selBoton = listaBotones.currentRow()
+        selEvento = listaEventos.currentRow()
+
+        if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
+            return
+
+        posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
+
+        for i in range(len(self.root[posBAP3])):  # Todos los elementos dentro de la BAP
+            if self.root[posBAP3][i].tag == 'Botones':
+                if len(self.root[posBAP3][i]) != 0:  # Hay botones cargados.
+                    for j in range(len(self.root[posBAP3][i][selBoton])):  # Todos los elementos dentro de cada boton.
+                        if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
+                            if len(self.root[posBAP3][i][selBoton][j]) == 0:  # El boton no tiene eventos cargados.
+                                break
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Accion'] = args.comboBox1Tab4.currentText()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Salida'] = args.spinBox1Tab4.text()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['Tiempo'] = args.spinBox2Tab4.text()
+                            except KeyError:
+                                pass
+                            try:
+                                self.root[posBAP3][i][selBoton][j][selEvento].attrib['RespuestaOK'] = args.comboBox2Tab4.currentText()
+                            except KeyError:
+                                pass
+
+    # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
+    def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
+        # print('readTag')
+        for i in range(len(root)):
+            try:
+                if name == (root[i].attrib['Name']):
+                    for j in range(len(root[i])):
+                        for k in range(len(root[i][j])):
+                            if root[i][j][k].tag == etiqueta1:
+                                if etiqueta2 is None:   # No hay etiqueta2 => los tags tienen atributos
+                                    return root[i][j][k].attrib[atributo]
+                                for m in range(len(root[i][j][k])):
+                                    if root[i][j][k][m].tag == etiqueta2:   # Si hay etiqueta2 => los tags tienen texto
+                                        return root[i][j][k][m].text
+                                return -1     # etiqueta2 no coincide con ningun tag del archivo
+            except KeyError:    # El tag no posee atributo 'Name'
+                continue
+
     #  Habilita o deshabilita el panel derecho de configuracion. Atributo 'enabled'
     def habilitar(self, lista, checkbox, l1, l2, l3, l4, l5, l6, l7, tipoBAP='BAP2'):
         # print('habilitar')
@@ -735,6 +914,82 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             checkbox.setChecked(False)
 
+    # Carga los eventos disponibles cuando se selecciona un boton en el tab 1
+    def cargarEventosConfig(self, listaBotones, listaEventos, args):
+        # print('cargarEventosConfig')
+        selBoton = listaBotones.currentRow()
+        listaEventos.setCurrentRow(0)  # Se resetea la seleccion sino puede quedar seteado del boton anterior.
+        listaEventos.clear()
+
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        if len(self.root[i][j]) != 0:
+                            for k in range(len(self.root[i][j][selBoton])):
+                                if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                    if len(self.root[i][j][selBoton][k]) != 0:
+                                        for m in range(len(self.root[i][j][selBoton][k])):
+                                            cant = listaEventos.count()
+                                            item = QtWidgets.QListWidgetItem()
+                                            item.setText('Evento {0}'.format(cant + 1))
+                                            listaEventos.addItem(item)
+                                            listaEventos.setCurrentRow(0)
+                                        return
+                                    else:
+                                        return
+
+    # Carga el evento seleccionado en el tab 1. El parametro tab1 es para poder cargar datos en tab1 o tab4.
+    def cargarEventoConfig(self, listaBotones, listaEventos, args, tab1=True):
+        # print('cargarEventoConfig')
+        selBoton = listaBotones.currentRow()
+        selEvento = listaEventos.currentRow()
+
+        if selBoton == -1 or selEvento == -1:
+            return
+
+        for i in range(len(self.root)):
+            if self.root[i].tag == 'Configuration':
+                for j in range(len(self.root[i])):
+                    if self.root[i][j].tag == 'Botones':
+                        if len(self.root[i][j]) != 0:
+                            if self.root[i][j][selBoton].tag == 'Boton':
+                                for k in range(len(self.root[i][j][selBoton])):
+                                    if self.root[i][j][selBoton][k].tag == 'Eventos':
+                                        if len(self.root[i][j][selBoton][k]) == 0:  # El boton no tiene eventos cargados.
+                                            return
+                                        elif self.root[i][j][selBoton][k][selEvento].tag == 'Evento':
+                                            try:
+                                                accion = self.root[i][j][selBoton][k][selEvento].attrib['Accion']
+                                            except KeyError:
+                                                accion = ''
+                                            try:
+                                                salida = self.root[i][j][selBoton][k][selEvento].attrib['Salida']
+                                            except KeyError:
+                                                salida = 0
+                                            try:
+                                                tiempo = self.root[i][j][selBoton][k][selEvento].attrib['Tiempo']
+                                            except KeyError:
+                                                tiempo = 0
+                                            try:
+                                                respuestaok = self.root[i][j][selBoton][k][selEvento].attrib['RespuestaOK']
+                                            except KeyError:
+                                                respuestaok = ''
+
+                                            # Modifica tab1
+                                            if tab1 is True:
+                                                args.comboBox1Tab1.setCurrentText(accion)
+                                                args.spinBox1Tab1.setValue(int(salida))
+                                                args.spinBox2Tab1.setValue(int(tiempo))
+                                                args.comboBox2Tab1.setCurrentText(respuestaok)
+                                            # Modifica tab4 cuando carga los botones por defecto de Configuration.
+                                            else:
+                                                args.comboBox1Tab4.setCurrentText(accion)
+                                                args.spinBox1Tab4.setValue(int(salida))
+                                                args.spinBox2Tab4.setValue(int(tiempo))
+                                                args.comboBox2Tab4.setCurrentText(respuestaok)
+                                            return
+
     # Cuando se selecciona una BAP3 de la lista del tab 4
     def cargarBotones(self, listaBAP3, listaBotones, listaEventos, args):
         # print('cargarBotones')
@@ -784,7 +1039,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 # Esta el tag Botones pero no contiene elementos.
                 else:
                     # Si la BAP3 seleccionada no contiene botones, se cargan los botones del tag "Configuration"
-                    self.loadConfiguration(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
+                    self.loadDatConfig(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
                     break
 
         self.__setDisabled(listaBotones, listaEventos, botones, args)
@@ -925,260 +1180,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                         except KeyError:
                                             pass
 
-    # Elimina el boton seleccionado en tab1
-    def removerBotonConfig(self, listaBotones, args):
-        # print('removerBotonConfig')
-        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-
-        selBoton = listaBotones.currentRow()
-
-        if selBoton == -1:
-            return
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        mensaje = QMessageBox()
-                        mensaje.setText('¿Está seguro de que desea eliminar este boton?')
-                        mensaje.setWindowTitle('Eliminar boton')
-                        eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
-                        noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
-                        mensaje.exec_()
-
-                        if mensaje.clickedButton() == eliminarButton:
-                            listaBotones.takeItem(selBoton)  # Borra el dispositivo de la lista.
-
-                            child = self.root[i][j].getchildren()[selBoton]
-                            self.root[i][j].remove(child)
-                            break
-
-        if listaBotones.count() == 0:
-            estado = True
-
-            args.listaEventosTab1.clear()
-            args.listaEventosTab1.setDisabled(estado)
-            args.removerBotonTab4.setDisabled(estado)
-            args.removerEventoTab4.setDisabled(estado)
-            args.agregarEventoTab4.setDisabled(estado)
-            args.comboBox1Tab4.setDisabled(estado)
-            args.spinBox1Tab4.setDisabled(estado)
-            args.spinBox2Tab4.setDisabled(estado)
-            args.comboBox2Tab4.setDisabled(estado)
-
-    # Elimina el evento seleccionado en tab1
-    def removerEventoConfig(self, listaBotones, listaEventos, args):
-        # print('removerEventoConfig')
-        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-
-        selBoton = listaBotones.currentRow()
-        selEvento = listaEventos.currentRow()
-
-        if selBoton == -1 or selEvento == -1:
-            return
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        for k in range(len(self.root[i][j][selBoton])):
-                            if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                mensaje = QMessageBox()
-                                mensaje.setText('¿Está seguro de que desea eliminar este evento?')
-                                mensaje.setWindowTitle('Eliminar evento')
-                                eliminarButton = mensaje.addButton('Si', mensaje.YesRole)
-                                noeliminarButton = mensaje.addButton('No', mensaje.NoRole)
-                                mensaje.exec_()
-
-                                if mensaje.clickedButton() == eliminarButton:
-                                    listaEventos.takeItem(selEvento)  # Borra el dispositivo de la lista.
-
-                                    child = self.root[i][j][selBoton][k].getchildren()[selEvento]
-                                    self.root[i][j][selBoton][k].remove(child)
-                                    break
-
-        if listaEventos.count() == 0:
-            # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
-            estado = True
-
-            args.listaEventosTab4.setDisabled(estado)
-            args.removerEventoTab1.setDisabled(estado)
-            args.comboBox1Tab1.setDisabled(estado)
-            args.spinBox1Tab1.setDisabled(estado)
-            args.spinBox2Tab1.setDisabled(estado)
-            args.comboBox2Tab1.setDisabled(estado)
-
-    # Agregar Botones tab 1
-    def agregarBotonConfig(self, listaBotones, listaEventos, args):
-        # print('agregarEventoConfig')
-        self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-        rutaImagenBoton, tipos = QFileDialog.getOpenFileName(self, 'Abrir imagen', 'resources/', 'Image Files (*.png *.jpg *.bmp)')  # Ruta del archivo imagen
-
-        if not rutaImagenBoton:
-            return
-
-        nombreImagenBoton = self.__getNombreImagenBoton(rutaImagenBoton)  # Obtiene el nombre del archivo imagen
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        boton = self.__botonGen(self.root[i][j], nombreImagenBoton)
-                        self.root[i][j].append(boton)
-
-                        cant = listaBotones.count()
-
-                        if cant == 0:  # No hay ningun dispositivo en la lista.
-                            nombre = 'Boton {0}:'.format((cant + 1))
-                        else:
-                            nombre = (listaBotones.item(cant - 1)).text()
-                            numero = int(nombre[len('Boton'):nombre.find(':')])
-                            numero = str(numero + 1)
-                            nombre = nombre[0:len('Boton')] + ' ' + numero + ':'
-
-                        item = QtWidgets.QListWidgetItem()
-                        item.setText(nombre)
-                        item.setToolTip(nombreImagenBoton)
-                        item.setFlags(int(item.flags()) | QtCore.Qt.ItemIsEditable)
-                        listaBotones.addItem(item)
-                        listaBotones.setCurrentRow(cant)
-
-                        break
-
-        # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
-        estado = False
-        args.listaEventosTab1.setDisabled(estado)
-        args.agregarEventoTab1.setDisabled(estado)
-        args.removerEventoTab1.setDisabled(estado)
-        args.removerBotonTab1.setDisabled(estado)
-
-    # Agregar Evento en el tag Configuration tab 1
-    def agregarEventoConfig(self, listaBotones, listaEventos, args):
-        # print('agregarEventoConfig')
-
-        selBoton = listaBotones.currentRow()
-        cant = listaEventos.count()
-
-        if selBoton == -1:
-            return
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        for k in range(len(self.root[i][j][selBoton])):
-                            if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                # Agrega el evento al archivo .dat
-                                evento = self.__eventoGen(self.root[i][j][selBoton][k])
-                                self.root[i][j][selBoton][k].append(evento)
-
-                                if cant == 0:  # No hay ningun dispositivo cargado en el archivo.
-                                    nombre = 'Evento {0}'.format((cant + 1))
-                                else:
-                                    nombre = (listaEventos.item(cant - 1)).text()
-                                    numero = int(nombre[len('Evento'):])
-                                    numero = str(numero + 1)
-                                    nombre = nombre[0:len('Evento')] + ' ' + numero
-
-                                    # Agrega el evento a la lista
-                                item = QtWidgets.QListWidgetItem()
-                                item.setText(nombre)
-                                listaEventos.addItem(item)
-
-                                # Habilita el boton por las dudas.
-                                args.removerEventoTab1.setDisabled(False)
-                                listaEventos.setCurrentRow(cant)
-                                self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
-                                break
-                        break
-                break
-
-        # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
-        estado = False
-
-        args.agregarEventoTab1.setDisabled(estado)
-        # args.listaEventosTab4.setDisabled(estado)
-        args.comboBox1Tab1.setDisabled(estado)
-        args.spinBox1Tab1.setDisabled(estado)
-        args.spinBox2Tab1.setDisabled(estado)
-        args.comboBox2Tab1.setDisabled(estado)
-
-    # Carga los eventos disponibles cuando se selecciona un boton en el tab 1
-    def cargarEventosConfig(self, listaBotones, listaEventos, args):
-        # print('cargarEventosConfig')
-        selBoton = listaBotones.currentRow()
-        listaEventos.setCurrentRow(0)  # Se resetea la seleccion sino puede quedar seteado del boton anterior.
-        listaEventos.clear()
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        if len(self.root[i][j]) != 0:
-                            for k in range(len(self.root[i][j][selBoton])):
-                                if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                    if len(self.root[i][j][selBoton][k]) != 0:
-                                        for m in range(len(self.root[i][j][selBoton][k])):
-                                            cant = listaEventos.count()
-                                            item = QtWidgets.QListWidgetItem()
-                                            item.setText('Evento {0}'.format(cant + 1))
-                                            listaEventos.addItem(item)
-                                            listaEventos.setCurrentRow(0)
-                                        return
-                                    else:
-                                        return
-
-    # Carga el evento seleccionado en el tab 1. El parametro tab1 es para poder cargar datos en tab1 o tab4.
-    def cargarEventoConfig(self, listaBotones, listaEventos, args, tab1=True):
-        # print('cargarEventoConfig')
-        selBoton = listaBotones.currentRow()
-        selEvento = listaEventos.currentRow()
-
-        if selBoton == -1 or selEvento == -1:
-            return
-
-        for i in range(len(self.root)):
-            if self.root[i].tag == 'Configuration':
-                for j in range(len(self.root[i])):
-                    if self.root[i][j].tag == 'Botones':
-                        if len(self.root[i][j]) != 0:
-                            if self.root[i][j][selBoton].tag == 'Boton':
-                                for k in range(len(self.root[i][j][selBoton])):
-                                    if self.root[i][j][selBoton][k].tag == 'Eventos':
-                                        if len(self.root[i][j][selBoton][k]) == 0:  # El boton no tiene eventos cargados.
-                                            return
-                                        elif self.root[i][j][selBoton][k][selEvento].tag == 'Evento':
-                                            try:
-                                                accion = self.root[i][j][selBoton][k][selEvento].attrib['Accion']
-                                            except KeyError:
-                                                accion = ''
-                                            try:
-                                                salida = self.root[i][j][selBoton][k][selEvento].attrib['Salida']
-                                            except KeyError:
-                                                salida = 0
-                                            try:
-                                                tiempo = self.root[i][j][selBoton][k][selEvento].attrib['Tiempo']
-                                            except KeyError:
-                                                tiempo = 0
-                                            try:
-                                                respuestaok = self.root[i][j][selBoton][k][selEvento].attrib['RespuestaOK']
-                                            except KeyError:
-                                                respuestaok = ''
-
-                                            # Modifica tab1
-                                            if tab1 is True:
-                                                args.comboBox1Tab1.setCurrentText(accion)
-                                                args.spinBox1Tab1.setValue(int(salida))
-                                                args.spinBox2Tab1.setValue(int(tiempo))
-                                                args.comboBox2Tab1.setCurrentText(respuestaok)
-                                            # Modifica tab4 cuando carga los botones por defecto de Configuration.
-                                            else:
-                                                args.comboBox1Tab4.setCurrentText(accion)
-                                                args.spinBox1Tab4.setValue(int(salida))
-                                                args.spinBox2Tab4.setValue(int(tiempo))
-                                                args.comboBox2Tab4.setCurrentText(respuestaok)
-                                            return
-
     # Cambio de id tabs tab 1
     def setIdTabsConfig(self, listaTabs):
         # print('setIdTabsConfig')
@@ -1269,7 +1270,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
     # Metodo para cambiar entre la configuracion por defecto y la configuracion particular de las BAP3. No se usa.
     def configToBAP(self, args):
         if args.checkBoxPlacas.isChecked() is True:
-            self.loadConfiguration(args.listaTabs, args.listaBotones, args)
+            self.loadDatConfig(args.listaTabs, args.listaBotones, args)
         else:
             self.cargarBotones(args.listaBAP3Tab4, args.listaBotones, args.listaEventosTab4, args)
 

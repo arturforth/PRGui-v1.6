@@ -297,7 +297,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2)     # BAP2
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, 'BAP3')  # BAP3
         self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 tab 4
-        self.ModelBAP.loadConfiguration(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Configuration tab 1
+        self.ModelBAP.loadDatConfig(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Configuration tab 1
         self.ModelCON.loadDat(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON)
         self.ModelKAN.loadDat(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN)
 
