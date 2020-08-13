@@ -111,8 +111,11 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
     # Carga tabs y botones del tab 1 cuando inicia el programa
     def loadConfiguration(self, listaTabs, listaBotones, listaEventos, args, itemEdit=True):
         # print('loadConfiguration')
+
+        # Borra todos los elementos de las listas previamente
         listaTabs.clear()
         listaBotones.clear()
+        listaEventos.clear()
 
         botones = False
 
@@ -889,6 +892,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         selBoton = listaBotones.currentRow()
         selEvento = listaEventos.currentRow()
 
+        if selBoton == -1 or selEvento == -1:
+            return
+
         for i in range(len(self.root)):
             if self.root[i].tag == 'Configuration':
                 for j in range(len(self.root[i])):
@@ -996,10 +1002,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             estado = True
 
             args.listaEventosTab4.setDisabled(estado)
-            args.removerEventoConfig.setDisabled(estado)
+            args.removerEventoTab1.setDisabled(estado)
             args.comboBox1Tab1.setDisabled(estado)
             args.spinBox1Tab1.setDisabled(estado)
-            args.spinBox2Config.setDisabled(estado)
+            args.spinBox2Tab1.setDisabled(estado)
             args.comboBox2Tab1.setDisabled(estado)
 
     # Agregar Botones tab 1
@@ -1179,6 +1185,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         selTab = listaTabs.currentRow()
         item = listaTabs.item(selTab)
 
+        if selTab == -1:
+            return
+
         for i in range(len(self.root)):
             if self.root[i].tag == 'Configuration':
                 for j in range(len(self.root[i])):
@@ -1222,7 +1231,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         selBoton = listaBotones.currentRow()
         item = listaBotones.item(selBoton)
 
-        if selBoton == -1:
+        if selBAP3 == -1 or selBoton == -1:
             return
 
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
@@ -1291,6 +1300,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         self.modificado = True
 
         selBAP3 = listaBAP3.currentRow()  # Posicion en la lista de la BAP3 seleccionada
+
+        if selBAP3 == -1:
+            return
 
         outsnum = spinBoxOutsNumBAP3.text()
 
