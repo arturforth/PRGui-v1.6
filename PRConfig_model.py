@@ -905,7 +905,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                             pass
                                         try:
                                             self.root[i][j][selBoton][k][selEvento].attrib[
-                                                'Salida'] = args.spinBox1Config.text()
+                                                'Salida'] = args.spinBox1Tab1.text()
                                         except KeyError:
                                             pass
                                         try:
@@ -915,7 +915,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                             pass
                                         try:
                                             self.root[i][j][selBoton][k][selEvento].attrib[
-                                                'RespuestaOK'] = args.comboBox2Config.currentText()
+                                                'RespuestaOK'] = args.comboBox2Tab1.currentText()
                                         except KeyError:
                                             pass
 
@@ -998,9 +998,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             args.listaEventosTab4.setDisabled(estado)
             args.removerEventoConfig.setDisabled(estado)
             args.comboBox1Tab1.setDisabled(estado)
-            args.spinBox1Config.setDisabled(estado)
+            args.spinBox1Tab1.setDisabled(estado)
             args.spinBox2Config.setDisabled(estado)
-            args.comboBox2Config.setDisabled(estado)
+            args.comboBox2Tab1.setDisabled(estado)
 
     # Agregar Botones tab 1
     def agregarBotonConfig(self, listaBotones, listaEventos, args):
@@ -1093,9 +1093,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         args.agregarEventoTab1.setDisabled(estado)
         # args.listaEventosTab4.setDisabled(estado)
         args.comboBox1Tab1.setDisabled(estado)
-        args.spinBox1Config.setDisabled(estado)
-        args.spinBox2Config.setDisabled(estado)
-        args.comboBox2Config.setDisabled(estado)
+        args.spinBox1Tab1.setDisabled(estado)
+        args.spinBox2Tab1.setDisabled(estado)
+        args.comboBox2Tab1.setDisabled(estado)
 
     # Carga los eventos disponibles cuando se selecciona un boton en el tab 1
     def cargarEventosConfig(self, listaBotones, listaEventos, args):
@@ -1162,9 +1162,9 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                             # Modifica tab1
                                             if tab1 is True:
                                                 args.comboBox1Tab1.setCurrentText(accion)
-                                                args.spinBox1Config.setValue(int(salida))
-                                                args.spinBox2Config.setValue(int(tiempo))
-                                                args.comboBox2Config.setCurrentText(respuestaok)
+                                                args.spinBox1Tab1.setValue(int(salida))
+                                                args.spinBox2Tab1.setValue(int(tiempo))
+                                                args.comboBox2Tab1.setCurrentText(respuestaok)
                                             # Modifica tab4 cuando carga los botones por defecto de Configuration.
                                             else:
                                                 args.comboBox1Tab4.setCurrentText(accion)

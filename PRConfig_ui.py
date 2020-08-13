@@ -109,36 +109,36 @@ class Ui_MainWindow:
         self.labelSalidaTab1.setGeometry(QtCore.QRect(350, 110, 89, 16))
         self.labelSalidaTab1.setObjectName("labelSalidaTab1")
 
-        self.spinBox1Config = QtWidgets.QSpinBox(self.ConfigurationBAP3GroupBox)
-        self.spinBox1Config.setGeometry(QtCore.QRect(350, 130, 85, 20))
-        self.spinBox1Config.setObjectName("SalidaConfigGroupBox")
+        self.spinBox1Tab1 = QtWidgets.QSpinBox(self.ConfigurationBAP3GroupBox)
+        self.spinBox1Tab1.setGeometry(QtCore.QRect(350, 130, 85, 20))
+        self.spinBox1Tab1.setObjectName("spinBox1Tab1")
 
         # Tiempo
-        self.labelTiempoConfig = QtWidgets.QLabel(self.ConfigurationBAP3GroupBox)
-        self.labelTiempoConfig.setGeometry(QtCore.QRect(350, 150, 89, 16))
-        self.labelTiempoConfig.setObjectName("LabelTiempoConfig")
+        self.labelTiempoTab1 = QtWidgets.QLabel(self.ConfigurationBAP3GroupBox)
+        self.labelTiempoTab1.setGeometry(QtCore.QRect(350, 150, 89, 16))
+        self.labelTiempoTab1.setObjectName("labelTiempoTab1")
 
-        self.spinBox2Config = QtWidgets.QSpinBox(self.ConfigurationBAP3GroupBox)
-        self.spinBox2Config.setGeometry(QtCore.QRect(350, 170, 85, 20))
-        self.spinBox2Config.setObjectName("TiempoConfigGroupBox")
+        self.spinBox2Tab1 = QtWidgets.QSpinBox(self.ConfigurationBAP3GroupBox)
+        self.spinBox2Tab1.setGeometry(QtCore.QRect(350, 170, 85, 20))
+        self.spinBox2Tab1.setObjectName("spinBox2Tab1")
 
         # Respuesta OK
-        self.labelRtaOKConfig = QtWidgets.QLabel(self.ConfigurationBAP3GroupBox)
-        self.labelRtaOKConfig.setGeometry(QtCore.QRect(350, 190, 89, 16))
-        self.labelRtaOKConfig.setObjectName("LabelRtaOKConfig")
+        self.labelRtaOKTab1 = QtWidgets.QLabel(self.ConfigurationBAP3GroupBox)
+        self.labelRtaOKTab1.setGeometry(QtCore.QRect(350, 190, 89, 16))
+        self.labelRtaOKTab1.setObjectName("labelRtaOKTab1")
 
-        self.comboBox2Config = QtWidgets.QComboBox(self.ConfigurationBAP3GroupBox)
-        self.comboBox2Config.setGeometry(QtCore.QRect(350, 210, 85, 20))
-        self.comboBox2Config.setEditable(False)
-        self.comboBox2Config.setObjectName("RtaOKConfigGroupBox")
-        self.comboBox2Config.addItem("")
-        self.comboBox2Config.addItem("")
-        self.comboBox2Config.addItem("")
+        self.comboBox2Tab1 = QtWidgets.QComboBox(self.ConfigurationBAP3GroupBox)
+        self.comboBox2Tab1.setGeometry(QtCore.QRect(350, 210, 85, 20))
+        self.comboBox2Tab1.setEditable(False)
+        self.comboBox2Tab1.setObjectName("RtaOKConfigGroupBox")
+        self.comboBox2Tab1.addItem("")
+        self.comboBox2Tab1.addItem("")
+        self.comboBox2Tab1.addItem("")
 
-        self.comboBox2Config.setCurrentText("")
-        self.comboBox2Config.setItemText(0, "PULSADA")
-        self.comboBox2Config.setItemText(1, "ENCENDIDA")
-        self.comboBox2Config.setItemText(2, "APAGADA")
+        self.comboBox2Tab1.setCurrentText("")
+        self.comboBox2Tab1.setItemText(0, "PULSADA")
+        self.comboBox2Tab1.setItemText(1, "ENCENDIDA")
+        self.comboBox2Tab1.setItemText(2, "APAGADA")
 
         self.agregarBotonTab1.setText('+B')
         self.agregarEventoTab1.setText('+E')
@@ -148,8 +148,8 @@ class Ui_MainWindow:
 
         self.labelAccionTab1.setText('Accion')
         self.labelSalidaTab1.setText('Salida')
-        self.labelTiempoConfig.setText('Tiempo')
-        self.labelRtaOKConfig.setText('Respuesta OK')
+        self.labelTiempoTab1.setText('Tiempo')
+        self.labelRtaOKTab1.setText('Respuesta OK')
 
         # Textos
         self.ConfigurationBAP3GroupBox.setTitle('Configuracion BapInfoManager')

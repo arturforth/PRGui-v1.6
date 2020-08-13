@@ -46,11 +46,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Edita Accion
         self.comboBox1Tab1.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita Salida
-        self.spinBox1Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.spinBox1Tab1.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita Tiempo
-        self.spinBox2Config.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.spinBox2Tab1.editingFinished.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         # Edita RespuestaOK
-        self.comboBox2Config.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
+        self.comboBox2Tab1.activated.connect(lambda: self.ModelBAP.setEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
 
         # Carga los eventos disponibles cuando se selecciona un boton.
         self.listaBotonesTab1.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarEventosConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
