@@ -39,7 +39,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.agregarEventoTab1.clicked.connect(lambda: self.ModelBAP.agregarEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         self.agregarBotonTab1.clicked.connect(lambda: self.ModelBAP.agregarBotonConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
         self.removerEventoTab1.clicked.connect(lambda: self.ModelBAP.removerEventoConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
-        self.removerBotonTab1.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesTab1, self))
+        self.removerBotonTab1.clicked.connect(lambda: self.ModelBAP.removerBotonConfig(self.listaBotonesTab1, self.listaEventosTab1, self))
 
         self.guardarTab1.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.agregarBotonTab4.clicked.connect(lambda: self.ModelBAP.agregarBoton(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
         self.agregarEventoTab4.clicked.connect(lambda: self.ModelBAP.agregarEvento(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
         self.removerEventoTab4.clicked.connect(lambda: self.ModelBAP.removerEvento(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
-        self.removerBotonTab4.clicked.connect(lambda: self.ModelBAP.removerBoton(self.listaBAP3Tab4, self.listaBotonesTab4, self))
+        self.removerBotonTab4.clicked.connect(lambda: self.ModelBAP.removerBoton(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
 
         self.guardarTab4.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
@@ -296,8 +296,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ModelSP1.loadConfig(self)     # Se pasa como argumento self de MainWindow
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2)     # BAP2
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, 'BAP3')  # BAP3
-        self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 tab 4
-        self.ModelBAP.loadDatConfig(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Configuration tab 1
+        self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 Tab 4
+        self.ModelBAP.loadDatConfig(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Tab 1
         self.ModelCON.loadDat(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON)
         self.ModelKAN.loadDat(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN)
 
