@@ -631,8 +631,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
                             break
 
-        self.__setDisabled(listaBAP3, listaBotones, listaEventos, botones, args)
-
     # Elimina Evento de Configuracion Placas BAP3 tab4
     def removerEvento(self, listaBAP3, listaBotones, listaEventos, args):
         selBAP3 = listaBAP3.currentRow()
@@ -661,28 +659,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                             child = self.root[posBAP3][i][selBoton][j].getchildren()[selEvento]
                             self.root[posBAP3][i][selBoton][j].remove(child)
                             self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
+
                             break
 
-        if listaEventos.count() == 0:
-            # Se habilitan los botones por las dudas (deshabilitan las funciones que eliminan)
-            estado = True
-
-            # args.listaEventosTab4.setDisabled(estado)
-            args.removerEventoTab4.setDisabled(estado)
-            # args.comboBox1Tab4.setDisabled(estado)
-            # args.spinBox1Tab4.setDisabled(estado)
-            # args.spinBox2Tab4.setDisabled(estado)
-            # args.comboBox2Tab4.setDisabled(estado)
-
-            args.comboBox1Tab4.setVisible(not estado)
-            args.spinBox1Tab4.setVisible(not estado)
-            args.spinBox2Tab4.setVisible(not estado)
-            args.comboBox2Tab4.setVisible(not estado)
-
-            args.labelAccionTab4.setVisible(not estado)
-            args.labelSalidaTab4.setVisible(not estado)
-            args.labelTiempoTab4.setVisible(not estado)
-            args.labelRtaOKTab4.setVisible(not estado)
+        self.__setDisabled(listaBAP3, listaBotones, listaEventos, True, args)
 
     #  Habilita o deshabilita el panel derecho de configuracion. Atributo 'enabled'
     def habilitar(self, lista, checkbox, l1, l2, l3, l4, l5, l6, l7, tipoBAP='BAP2'):
@@ -913,7 +893,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # No existe el tag Botones o existe pero no contiene elementos.
         if tagBotones is False or botones is False:
-            # self.loadDatConfig(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
             self.loadDatConfig(args.listaTabs, listaBotones, listaEventos, args, itemEdit=False)
 
         self.__setDisabled(listaBAP3, listaBotones, listaEventos, botones, args)
@@ -1087,7 +1066,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Cambio de id tabs tab 1
     def setIdTabsConfig(self, listaTabs):
-        # print('setIdTabsConfig')
         selTab = listaTabs.currentRow()
         item = listaTabs.item(selTab)
 
@@ -1104,7 +1082,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Cambio de id en botones del tab 1
     def setIdBotonesConfig(self, listaBotones):
-        # print('setIdBotonesConfig')
         selBoton = listaBotones.currentRow()
         item = listaBotones.item(selBoton)
 
@@ -1132,7 +1109,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Cambio de id en botones del tab 4
     def setIdBotones(self, listaBAP3, listaBotones):
-        # print('setIdBotones')
         selBAP3 = listaBAP3.currentRow()
         selBoton = listaBotones.currentRow()
         item = listaBotones.item(selBoton)
@@ -1161,8 +1137,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Setea OutsNum de Configuration en tab 1
     def setOutsNumConfig(self, spinBoxOutsNum):
-        # print('setOutsNumConfig')
-
         outsnum = spinBoxOutsNum.text()
 
         for i in range(len(self.root)):
@@ -1175,9 +1149,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Setea OutsNum de las BAP3 tab 3
     def setOutsNumBAP3(self, listaBAP3, spinBoxOutsNumBAP3):
-        # print('setOutsNumBAP3')
-        self.modificado = True
-
         selBAP3 = listaBAP3.currentRow()  # Posicion en la lista de la BAP3 seleccionada
 
         if selBAP3 == -1:
@@ -1188,6 +1159,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
 
         self.root[posBAP3].attrib['OutsNum'] = outsnum
+        self.modificado = True
 
     # Metodo para cambiar entre la configuracion por defecto y la configuracion particular de las BAP3. No se usa.
     def configToBAP(self, args):
@@ -1226,7 +1198,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Mapea las BAP2 y BAP3 de la lista de seleccion a la posicion real en el archivo .dat
     def __findPosBAP(self, selBAP, tipoBAP):
-        # print('__findPosBAP')
         posBAP = 0
 
         # filtra de acuerdo a tipoBAP
