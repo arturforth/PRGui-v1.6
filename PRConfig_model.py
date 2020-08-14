@@ -81,38 +81,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 removerbutton.setDisabled(True)
                 configgroupbox.setDisabled(True)
 
-        # # Si no hay ninguna placa cargada se deshabilita el boton "remover BAP/Consola/Kant" y el panel de configuracion
-        # if removerbutton is not None and configgroupbox is not None:    # para tab 2, tab 3, tab 5 y tab 7
-        #     if lista.count() == 0:
-        #         removerbutton.setDisabled(True)
-        #         configgroupbox.setDisabled(True)
-
-        # else:   # para tab 4
-        #     if lista.count() == 0:
-        #         estado = True
-        #
-        #         # Cuando no hay BAP3 cargadas no puede haber Botones ni Eventos
-        #         args.listaEventosTab4.clear()
-        #         args.listaBotonesTab4.clear()
-        #
-        #         lista.setDisabled(estado)
-        #         args.listaEventosTab4.setDisabled(estado)
-        #         args.listaBotonesTab4.setDisabled(estado)
-        #         args.removerBotonTab4.setDisabled(estado)
-        #         args.agregarBotonTab4.setDisabled(estado)
-        #         args.removerEventoTab4.setDisabled(estado)
-        #         args.agregarEventoTab4.setDisabled(estado)
-        #
-        #         args.labelAccionTab4.setVisible(not estado)
-        #         args.labelSalidaTab4.setVisible(not estado)
-        #         args.labelTiempoTab4.setVisible(not estado)
-        #         args.labelRtaOKTab4.setVisible(not estado)
-        #
-        #         args.comboBox1Tab4.setVisible(not estado)
-        #         args.spinBox1Tab4.setVisible(not estado)
-        #         args.spinBox2Tab4.setVisible(not estado)
-        #         args.comboBox2Tab4.setVisible(not estado)
-
         # Por defecto el primer elemento se selecciona el primer elemento de la lista (si es que hay)
         lista.setCurrentRow(0)
 
@@ -333,14 +301,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         lista.setCurrentRow(cant)
         configgroupbox.setDisabled(False)
-
-        # # Caso BAP3
-        # if args is not None:
-        #     estado = False
-        #
-        #     args.listaBAP3Tab4.setDisabled(estado)
-        #     args.listaBotonesTab4.setDisabled(estado)
-        #     args.agregarBotonTab4.setDisabled(estado)
 
     # Agregar Botones tab 1
     def agregarBotonConfig(self, listaBotones, listaEventos, args):
@@ -1397,7 +1357,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
             listaBAP3.setDisabled(estado)
             args.listaBotonesTab4.setDisabled(estado)
-            # args.listaEventosTab4.setDisabled(estado)
+            args.listaEventosTab4.setDisabled(estado)
 
             args.removerBotonTab4.setDisabled(estado)
             args.agregarBotonTab4.setDisabled(estado)
