@@ -817,7 +817,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         self.__setDisabledConfig(listaBotones, listaEventos, args)
 
     # Carga el evento seleccionado en el tab 1. El parametro tab1 es para poder cargar datos en tab1 o tab4.
-    def cargarEventoConfig(self, listaBotones, listaEventos, args, tab1=True):
+    def cargarEventoConfig(self, listaBotones, listaEventos, args, tab4=False):
         selBoton = listaBotones.currentRow()
         selEvento = listaEventos.currentRow()
 
@@ -852,18 +852,18 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                             except KeyError:
                                                 respuestaok = ''
 
-                                            # Modifica tab1
-                                            if tab1 is True:
-                                                args.comboBox1Tab1.setCurrentText(accion)
-                                                args.spinBox1Tab1.setValue(int(salida))
-                                                args.spinBox2Tab1.setValue(int(tiempo))
-                                                args.comboBox2Tab1.setCurrentText(respuestaok)
-                                            # Modifica tab4 cuando carga los botones por defecto de Configuration.
-                                            else:
+                                            # Modifica tab4 cuando carga los botones de Configuration.
+                                            if tab4 == True:
                                                 args.comboBox1Tab4.setCurrentText(accion)
                                                 args.spinBox1Tab4.setValue(int(salida))
                                                 args.spinBox2Tab4.setValue(int(tiempo))
                                                 args.comboBox2Tab4.setCurrentText(respuestaok)
+                                            # Modifica tab1
+                                            else:
+                                                args.comboBox1Tab1.setCurrentText(accion)
+                                                args.spinBox1Tab1.setValue(int(salida))
+                                                args.spinBox2Tab1.setValue(int(tiempo))
+                                                args.comboBox2Tab1.setCurrentText(respuestaok)
                                             return
 
     # Cuando se selecciona una BAP3 de la lista del tab 4
@@ -879,10 +879,12 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
 
+        tagBotones = False
         botones = False
 
         for i in range(len(self.root[posBAP3])):
             if self.root[posBAP3][i].tag == 'Botones':
+                tagBotones = True
                 if len(self.root[posBAP3][i]) != 0:
                     botones = True  # El tag Botones contiene elementos.
                     for j in range(len(self.root[posBAP3][i])):
@@ -908,11 +910,11 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                         item.setToolTip(tooltip)
                                         break
                                 break
-                # Esta el tag Botones pero no contiene elementos.
-                else:
-                    # Si la BAP3 seleccionada no contiene botones, se cargan los botones del tag "Configuration"
-                    self.loadDatConfig(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
-                    break
+
+        # No existe el tag Botones o existe pero no contiene elementos.
+        if tagBotones is False or botones is False:
+            # self.loadDatConfig(args.listaTabs, args.listaBotonesTab4, args.listaEventosTab4, args, itemEdit=False)
+            self.loadDatConfig(args.listaTabs, listaBotones, listaEventos, args, itemEdit=False)
 
         self.__setDisabled(listaBAP3, listaBotones, listaEventos, botones, args)
 
@@ -925,20 +927,19 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         listaEventos.setCurrentRow(0)   # Se resetea la seleccion sino puede quedar seteado del boton anterior.
         listaEventos.clear()
 
+        tagBotones = False
         botones = False
-        eventos = False
 
         # Encuentra la BAP3 seleccionada.
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
 
         for i in range(len(self.root[posBAP3])):  # Todos los botones
             if self.root[posBAP3][i].tag == 'Botones':
+                tagBotones = True
                 if len(self.root[posBAP3][i]) != 0:     # Hay botones cargados en la BAP3?
                     botones = True  # Hay botones cargados.
                     for j in range(len(self.root[posBAP3][i][numBoton])):
                         if self.root[posBAP3][i][numBoton][j].tag == 'Eventos':
-                            # if len(self.root[posBAP3][i][numBoton][j]) != 0:
-                                # eventos = True
                             for k in range(len(self.root[posBAP3][i][numBoton][j])):
                                 cant = listaEventos.count()
                                 item = QtWidgets.QListWidgetItem()
@@ -946,9 +947,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                 listaEventos.addItem(item)
                             break
                     break
-                else:   # Existe el tag 'Botones' pero no hay botones cargados en la BAP3
-                    self.cargarEventosConfig(args.listaBotonesTab4, args.listaEventosTab4, args)
-                    break
+
+        if tagBotones is False or botones is False:
+            # self.cargarEventosConfig(args.listaBotonesTab4, args.listaEventosTab4, args)
+            self.cargarEventosConfig(listaBotones, listaEventos, args)
 
         self.__setDisabled(listaBAP3, listaBotones, listaEventos, botones, args)
 
@@ -963,19 +965,19 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         if selBAP3 == -1 or selBoton == -1 or selEvento == -1:
             return
 
+        tagBotones = False
         botones = False
-        eventos = False
 
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
 
         for i in range(len(self.root[posBAP3])):  # Todos los elementos dentro de la BAP
             if self.root[posBAP3][i].tag == 'Botones':
+                tagBotones = True
                 if len(self.root[posBAP3][i]) != 0:  # Hay botones cargados.
                     botones = True
                     for j in range(len(self.root[posBAP3][i][selBoton])):   # Todos los elementos dentro de cada boton.
                         if self.root[posBAP3][i][selBoton][j].tag == 'Eventos':
                             if len(self.root[posBAP3][i][selBoton][j]) != 0:    # El boton no tiene eventos cargados.
-                                # break
                                 try:
                                     accion = self.root[posBAP3][i][selBoton][j][selEvento].attrib['Accion']
                                 except KeyError:
@@ -1001,11 +1003,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                             # No hay eventos cargados en el boton
                             else:
                                 break
-                # No hay botones cargados en la BAP
-                else:
-                    # Si no hay botones cargados o no existe el tag, debe cargar los botones y eventos de Configuration.
-                    self.cargarEventoConfig(args.listaBotonesTab4, args.listaEventosTab4, args, tab1=False)
-                    break
+
+        # Si no hay botones cargados o no existe el tag, debe cargar los botones y eventos de Configuration.
+        if tagBotones is False or botones is False:
+            self.cargarEventoConfig(listaBotones, listaEventos, args, tab4=True)   # En este caso se debe modificar tab4
 
     # Setea las propiedades de cada evento cuando se modifican desde la GUI tab 1
     def setEventoConfig(self, listaBotones, listaEventos, args):
