@@ -334,13 +334,13 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         lista.setCurrentRow(cant)
         configgroupbox.setDisabled(False)
 
-        # Caso BAP3
-        if args is not None:
-            estado = False
-
-            args.listaBAP3Tab4.setDisabled(estado)
-            args.listaBotonesTab4.setDisabled(estado)
-            args.agregarBotonTab4.setDisabled(estado)
+        # # Caso BAP3
+        # if args is not None:
+        #     estado = False
+        #
+        #     args.listaBAP3Tab4.setDisabled(estado)
+        #     args.listaBotonesTab4.setDisabled(estado)
+        #     args.agregarBotonTab4.setDisabled(estado)
 
     # Agregar Botones tab 1
     def agregarBotonConfig(self, listaBotones, listaEventos, args):
@@ -1386,7 +1386,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Habilita o deshabilita componentes de acuerdo a la configuracion del Tab 4
     def __setDisabled(self, listaBAP3, listaBotones, listaEventos, botones, args):
-        # estado = None
+        estado = None
 
         if listaBAP3.count() == 0:
             estado = True
@@ -1397,12 +1397,19 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
             listaBAP3.setDisabled(estado)
             args.listaBotonesTab4.setDisabled(estado)
-            args.listaEventosTab4.setDisabled(estado)
+            # args.listaEventosTab4.setDisabled(estado)
 
             args.removerBotonTab4.setDisabled(estado)
             args.agregarBotonTab4.setDisabled(estado)
             args.removerEventoTab4.setDisabled(estado)
             args.agregarEventoTab4.setDisabled(estado)
+
+        if listaBAP3.count() != 0:
+            estado = False
+
+            listaBAP3.setDisabled(estado)
+            args.listaBotonesTab4.setDisabled(estado)
+            # args.agregarBotonTab4.setDisabled(estado)
 
         # La BAP3 no tiene botones propios
         if botones is False:
