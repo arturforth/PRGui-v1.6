@@ -1409,7 +1409,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
             listaBAP3.setDisabled(estado)
             args.listaBotonesTab4.setDisabled(estado)
-            # args.agregarBotonTab4.setDisabled(estado)
+            args.agregarBotonTab4.setDisabled(estado)
 
         # La BAP3 no tiene botones propios
         if botones is False:
