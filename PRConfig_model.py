@@ -507,8 +507,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Boton remover. Elimina los dispositivos de cada lista.
     def removerDisp(self, lista, configgroupbox, removerbutton, tipoBAP='BAP2'):
-        # print('removerDisp')
-
         seldispositivo = lista.currentRow()
 
         posdispositivo = self.__findPosBAP(seldispositivo, tipoBAP)
@@ -605,8 +603,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         posBAP3 = self.__findPosBAP(selBAP3, 'BAP3')
 
-        botones = True
-
         for i in range(len(self.root[posBAP3])):  # Todos los botones
             if self.root[posBAP3][i].tag == 'Botones':
                 if len(self.root[posBAP3][i]) != 0:
@@ -626,7 +622,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
 
                             if listaBotones.count() == 0:
-                                botones = False
                                 self.loadDatConfig(args.listaTabs, listaBotones, listaEventos, args)
 
                             break
@@ -696,10 +691,19 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Cada vez que se selecciona una placa BAP2 o BAP3 (Solo tab 3), Consola o Kant de la lista (mouse o tecla)
     def cargarItem(self, lista, checkbox, removerbutton, l1, l2, l3, l4, l5, l6, l7, OutsNum=None, tipoBAP='BAP2'):
-        removerbutton.setDisabled(False)    # TODO: REVISAR COMO SACAR ESTO
+        print('cargarItem')
+        # removerbutton.setDisabled(False)    # TODO: REVISAR COMO SACAR ESTO
         seldispositivo = lista.currentRow()  # Posicion en la lista del dispositivo seleccionado
 
         if seldispositivo == -1:
+            l1.setText('')
+            l2.setText('')
+            l3.setText('')
+            l4.setText('')
+            l5.setText('')
+            l6.setText('')
+            l7.setText('')
+
             return
 
         lineas = []
@@ -741,26 +745,26 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             linea1 = self.root[posdispositivo].attrib['id']
 
-        # Cuando se borra el ultimo elemento
-        if posdispositivo < 0:
-            l1.setText('')
-            l2.setText('')
-            l3.setText('')
-            l4.setText('')
-            l5.setText('')
-            l6.setText('')
-            l7.setText('')
-        else:
-            try:    # No todos los dispositivos tienen la misma cantidad de lineas de configuracion.
-                l1.setText(linea1)
-                l2.setText(lineas[0])
-                l3.setText(lineas[1])
-                l4.setText(lineas[2])
-                l5.setText(lineas[3])
-                l6.setText(lineas[4])
-                l7.setText(lineas[5])
-            except IndexError:
-                pass
+        # # Cuando se borra el ultimo elemento
+        # if posdispositivo == -1:
+        #     l1.setText('')
+        #     l2.setText('')
+        #     l3.setText('')
+        #     l4.setText('')
+        #     l5.setText('')
+        #     l6.setText('')
+        #     l7.setText('')
+        # else:
+        try:    # No todos los dispositivos tienen la misma cantidad de lineas de configuracion.
+            l1.setText(linea1)
+            l2.setText(lineas[0])
+            l3.setText(lineas[1])
+            l4.setText(lineas[2])
+            l5.setText(lineas[3])
+            l6.setText(lineas[4])
+            l7.setText(lineas[5])
+        except IndexError:
+            pass
 
         if enabled == 'true':
             checkbox.setChecked(True)
@@ -1160,13 +1164,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.root[posBAP3].attrib['OutsNum'] = outsnum
         self.modificado = True
-
-    # Metodo para cambiar entre la configuracion por defecto y la configuracion particular de las BAP3. No se usa.
-    def configToBAP(self, args):
-        if args.checkBoxPlacas.isChecked() is True:
-            self.loadDatConfig(args.listaTabs, args.listaBotones, args)
-        else:
-            self.cargarBotones(args.listaBAP3Tab4, args.listaBotones, args.listaEventosTab4, args)
 
     # Boton guardar de todas los tabs
     def guardarCambios(self):
