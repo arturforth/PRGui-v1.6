@@ -64,7 +64,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createConfigBAPGroupBox()
         self.createPlacasBAPGroupBox()
 
-        self.agregarBAP2.clicked.connect(lambda: self.ModelBAP.agregarDisp(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, labelsBAP))
+        self.agregarBAP2.clicked.connect(lambda: self.ModelBAP.agregarDisp(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2, labelsBAP))
         self.removerBAP2.clicked.connect(lambda: self.ModelBAP.removerDisp(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2))
 
         self.guardarBAP2.clicked.connect(lambda: self.ModelBAP.guardarCambios())
@@ -92,7 +92,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listWidgetPlacasBAP2.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarItem(
                                                                                             self.listWidgetPlacasBAP2,
                                                                                             self.checkBoxBAP,
-                                                                                            self.removerBAP2,
                                                                                             self.lineEdit1BAP,
                                                                                             self.lineEdit2BAP,
                                                                                             self.lineEdit3BAP,
@@ -105,7 +104,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createPlacasBAP3GroupBox()
         self.createConfigBAP3GroupBox()
 
-        self.agregarBAP3.clicked.connect(lambda: self.ModelBAP.agregarDisp(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, labelsBAP3, 'BAP3', self))
+        self.agregarBAP3.clicked.connect(lambda: self.ModelBAP.agregarDisp(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, labelsBAP3, 'BAP3'))
         self.removerBAP3.clicked.connect(lambda: self.ModelBAP.removerDisp(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, 'BAP3'))
 
         self.guardarBAP3.clicked.connect(lambda: self.ModelBAP.guardarCambios())
@@ -129,7 +128,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listWidgetPlacasBAP3.itemSelectionChanged.connect(lambda: self.ModelBAP.cargarItem(
                                                                                             self.listWidgetPlacasBAP3,
                                                                                             self.checkBoxBAP3,
-                                                                                            self.removerBAP3,
                                                                                             self.lineEdit1BAP3,
                                                                                             self.lineEdit2BAP3,
                                                                                             self.lineEdit3BAP3,
@@ -175,7 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createConfigCONGroupBox()
         self.createConsolasGroupBox()
 
-        self.agregarCON.clicked.connect(lambda: self.ModelCON.agregarDisp(self.listWidgetConsolas, self.ConfigCONGroupBox, labelsCON))
+        self.agregarCON.clicked.connect(lambda: self.ModelCON.agregarDisp(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON, labelsCON))
         self.removerCON.clicked.connect(lambda: self.ModelCON.removerDisp(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON))
 
         self.guardarCON.clicked.connect(lambda: self.ModelCON.guardarCambios())
@@ -199,7 +197,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.listWidgetConsolas.itemSelectionChanged.connect(lambda: self.ModelCON.cargarItem(self.listWidgetConsolas,
                                                                                               self.checkBoxCON,
-                                                                                              self.removerCON,
                                                                                               self.lineEdit1CON,
                                                                                               self.lineEdit2CON,
                                                                                               self.lineEdit3CON,
@@ -212,7 +209,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createConfigKANGroupBox()
         self.createKantsGroupBox()
 
-        self.agregarKAN.clicked.connect(lambda: self.ModelKAN.agregarDisp(self.listWidgetKants, self.ConfigKANGroupBox, labelsKAN))
+        self.agregarKAN.clicked.connect(lambda: self.ModelKAN.agregarDisp(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN, labelsKAN))
         self.removerKAN.clicked.connect(lambda: self.ModelKAN.removerDisp(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN))
 
         self.guardarKANButton.clicked.connect(lambda: self.ModelKAN.guardarCambios())
@@ -236,7 +233,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.listWidgetKants.itemSelectionChanged.connect(lambda: self.ModelKAN.cargarItem(self.listWidgetKants,
                                                                                            self.checkBoxKAN,
-                                                                                           self.removerKAN,
                                                                                            self.lineEdit1KAN,
                                                                                            self.lineEdit2KAN,
                                                                                            self.lineEdit3KAN,

@@ -270,7 +270,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 continue
 
     # Boton "agregar". Agrega el dispositivo correspondiente al final de cada lista.
-    def agregarDisp(self, lista, configgroupbox, labels, tipoPlaca='BAP2', args=None):
+    def agregarDisp(self, lista, configgroupbox, removerDisp, labels, tipoPlaca='BAP2'):
         self.modificado = True   # Cada vez que se hace un cambio se actualiza este flag
 
         cant = lista.count()
@@ -301,6 +301,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         lista.setCurrentRow(cant)
         configgroupbox.setDisabled(False)
+        removerDisp.setDisabled(False)
 
     # Agregar Botones tab 1
     def agregarBotonConfig(self, listaBotones, listaEventos, args):
@@ -690,11 +691,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
 
     # Cada vez que se selecciona una placa BAP2 o BAP3 (Solo tab 3), Consola o Kant de la lista (mouse o tecla)
-    def cargarItem(self, lista, checkbox, removerbutton, l1, l2, l3, l4, l5, l6, l7, OutsNum=None, tipoBAP='BAP2'):
-        print('cargarItem')
-        # removerbutton.setDisabled(False)    # TODO: REVISAR COMO SACAR ESTO
+    def cargarItem(self, lista, checkbox, l1, l2, l3, l4, l5, l6, l7, OutsNum=None, tipoBAP='BAP2'):
         seldispositivo = lista.currentRow()  # Posicion en la lista del dispositivo seleccionado
 
+        # Si no hay elementos en la lista se borra el contenido de las lineas.
         if seldispositivo == -1:
             l1.setText('')
             l2.setText('')
@@ -745,16 +745,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             linea1 = self.root[posdispositivo].attrib['id']
 
-        # # Cuando se borra el ultimo elemento
-        # if posdispositivo == -1:
-        #     l1.setText('')
-        #     l2.setText('')
-        #     l3.setText('')
-        #     l4.setText('')
-        #     l5.setText('')
-        #     l6.setText('')
-        #     l7.setText('')
-        # else:
         try:    # No todos los dispositivos tienen la misma cantidad de lineas de configuracion.
             l1.setText(linea1)
             l2.setText(lineas[0])
