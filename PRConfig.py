@@ -142,7 +142,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createTab4GroupBox()
 
         # Actualiza los cambios hechos en el tab1 en el tab4
-        self.tabs.currentChanged.connect(lambda: self.ModelBAP.updateTab(self.tabs, self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
+        self.tabs.currentChanged.connect(lambda: self.ModelBAP.updateTab(self.tabs, self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self, self.listWidgetPlacasBAP3))
 
         self.agregarBotonTab4.clicked.connect(lambda: self.ModelBAP.agregarBoton(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
         self.agregarEventoTab4.clicked.connect(lambda: self.ModelBAP.agregarEvento(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
