@@ -70,13 +70,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.guardarBAP2.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
         # Configuracion para BAPInfoManager.dat
-        self.lineEdit1BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit1BAP, 1))
-        self.lineEdit2BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit2BAP, 2))
-        self.lineEdit3BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit3BAP, 3))
-        self.lineEdit4BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit4BAP, 4))
-        self.lineEdit5BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit5BAP, 5))
-        self.lineEdit6BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit6BAP, 6))
-        self.lineEdit7BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit7BAP, 7))
+        self.lineEdit1BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit1BAP, 1, 'Id'))
+        self.lineEdit2BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit2BAP, 2, 'NroSucursal'))
+        self.lineEdit3BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit3BAP, 3, 'NombreSucursal'))
+        self.lineEdit4BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit4BAP, 4, 'InfoExtra'))
+        self.lineEdit5BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit5BAP, 5, 'IP_Port'))
+        self.lineEdit6BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit6BAP, 6, 'NroAbonadoKANT'))
+        self.lineEdit7BAP.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP2, self.lineEdit7BAP, 7, 'IDPlaca'))
 
         self.checkBoxBAP.stateChanged.connect(lambda: self.ModelBAP.habilitar(self.listWidgetPlacasBAP2,
                                                                               self.checkBoxBAP,
@@ -110,7 +110,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.guardarBAP3.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
         # Configuracion para BAPInfoManager.dat
-        self.lineEdit1BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit1BAP3, 1, 'NroAbonado', 'BAP3'))
+        self.lineEdit1BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit1BAP3, 1, 'Id', 'BAP3'))
         self.lineEdit2BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit2BAP3, 2, 'NroSucursal', 'BAP3'))
         self.lineEdit3BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit3BAP3, 3, 'NombreSucursal', 'BAP3'))
         self.lineEdit4BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit4BAP3, 4, 'InfoExtra', 'BAP3'))
@@ -179,11 +179,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.guardarCON.clicked.connect(lambda: self.ModelCON.guardarCambios())
 
         # Configuracion para ConsoleInfoManager.dat
-        self.lineEdit1CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit1CON, 1))
-        self.lineEdit2CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit2CON, 2))
-        self.lineEdit3CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit3CON, 3))
-        self.lineEdit4CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit4CON, 4))
-        self.lineEdit5CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit5CON, 5))
+        self.lineEdit1CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit1CON, 1, 'Id'))
+        self.lineEdit2CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit2CON, 2, 'NombreConsola'))
+        self.lineEdit3CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit3CON, 3, 'InfoExtra'))
+        self.lineEdit4CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit4CON, 4, 'IP'))
+        self.lineEdit5CON.editingFinished.connect(lambda: self.ModelCON.writeDat(self.listWidgetConsolas, self.lineEdit5CON, 5, 'NroNodoKANT'))
 
         self.checkBoxCON.stateChanged.connect(lambda: self.ModelCON.habilitar(self.listWidgetConsolas,
                                                                               self.checkBoxCON,
@@ -215,11 +215,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.guardarKANButton.clicked.connect(lambda: self.ModelKAN.guardarCambios())
 
         # Configuracion para KantInfoManager.dat
-        self.lineEdit1KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit1KAN, 1))
-        self.lineEdit2KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit2KAN, 2))
-        self.lineEdit3KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit3KAN, 3))
-        self.lineEdit4KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit4KAN, 4))
-        self.lineEdit5KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit5KAN, 5))
+        self.lineEdit1KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit1KAN, 1, 'NroNodo'))
+        self.lineEdit2KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit2KAN, 2, 'NombreKant'))
+        self.lineEdit3KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit3KAN, 3, 'IP_Port'))
+        self.lineEdit4KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit4KAN, 4, 'AliveFrequency'))
+        self.lineEdit5KAN.editingFinished.connect(lambda: self.ModelKAN.writeDat(self.listWidgetKants, self.lineEdit5KAN, 5, 'RetryFrequency'))
 
         self.checkBoxKAN.stateChanged.connect(lambda: self.ModelKAN.habilitar(self.listWidgetKants,
                                                                               self.checkBoxKAN,

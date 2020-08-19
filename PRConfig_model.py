@@ -216,7 +216,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Para escribir en los archivos InfoManager.dat los datos ingresados desde la GUI.
     def writeDat(self, lista, linea, numlinea, label=None, tipoBAP='BAP2'): # TODO: ver que otro nombre mejor se le puede poner
-        # print('writeDat')
         self.modificado = True   # Cada vez que se hace un cambio se actualiza este flag
 
         seldispositivo = lista.currentRow()
@@ -226,11 +225,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(len(self.root[posdispositivo])):
             if label == self.root[posdispositivo][i].tag:
                 self.root[posdispositivo][i].text = linea.text()
-            if label == 'NroAbonado':
+            if label == 'Id':
                 self.root[posdispositivo].attrib['id'] = linea.text()
             if label == 'NroNodo':
                 self.root[posdispositivo].attrib['nronodo'] = linea.text()
-
 
         # if numlinea is 1:
         #     if self.dispositivo is 'Kant':
@@ -1166,8 +1164,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Boton guardar de todas los tabs
     def guardarCambios(self):
-        # print('guardarCambios')
-
         self.modificado = False
         self.tree.write(self.filename, pretty_print=True, xml_declaration=True, encoding='utf-8')
 
