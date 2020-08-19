@@ -147,7 +147,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Se ejecuta cuando se termina de crear la ventana y levanta los datos de los archivos .config
     def loadConfig(self, args):
-        # print('loadConfig')
         dirconsola = self.readTag(self.root, 'PROperListener', 'LogFile', atributo='ConsoleAddress')
         tcpserverlistener = self.readTag(self.root, 'PROperListener', 'TCPServerListener', atributo='Address')
         udpserverlistener = self.readTag(self.root, 'PRBAPListener', 'UDPServerListener', atributo='Address')
@@ -183,7 +182,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Para escribir en Spools_PRManager.config (tab 7) los datos ingresados desde la GUI.
     def writeConfig(self, args, linea, name=None, etiqueta1=None, etiqueta2=None, atributo=None):
-        # print('writeConfig')
         self.modificado = True   # Cada vez que se hace un cambio se actualiza este flag
 
         names = ['PROperListener', 'PRBAPListener', 'BAPKeepAlive', 'KantCommModule']
@@ -220,9 +218,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.writeTag(self.root, name, etiqueta1, etiqueta2, atributo, texto)
 
     # Para escribir en los archivos InfoManager.dat los datos ingresados desde la GUI.
-    def writeDat(self, lista, linea, numlinea, label=None, tipoBAP='BAP2'): # TODO: ver que otro nombre mejor se le puede poner
-        self.modificado = True   # Cada vez que se hace un cambio se actualiza este flag
-
+    def writeDat(self, lista, linea, label=None, tipoBAP='BAP2'): # TODO: ver que otro nombre mejor se le puede poner
         seldispositivo = lista.currentRow()
 
         posdispositivo = self.__findPosBAP(seldispositivo, tipoBAP)
@@ -230,10 +226,13 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(len(self.root[posdispositivo])):
             if label == self.root[posdispositivo][i].tag:
                 self.root[posdispositivo][i].text = linea.text()
+                self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
             if label == 'Id':
                 self.root[posdispositivo].attrib['id'] = linea.text()
+                self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
             if label == 'NroNodo':
                 self.root[posdispositivo].attrib['nronodo'] = linea.text()
+                self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
 
         # if numlinea is 1:
         #     if self.dispositivo is 'Kant':
@@ -245,7 +244,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
     def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
-        # print('readTag')
         for i in range(len(root)):
             try:
                 if name == (root[i].attrib['Name']):
@@ -263,7 +261,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Escribe val en el tag indicado en los parametros. Devuelve -1 si no encuentra el tag.
     def writeTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None, val=None):
-        # print('writeTag')
         for i in range(len(root)):
             try:
                 if name == (root[i].attrib['Name']):
@@ -355,7 +352,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
     # Agregar Evento en el tag Configuration tab 1
     def agregarEventoConfig(self, listaBotones, listaEventos, args):
         selBoton = listaBotones.currentRow()
-        # cant = listaEventos.count()
 
         if selBoton == -1:
             return
@@ -406,7 +402,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Agrega un boton en Configuracion Placas BAP3 tab 4
     def agregarBoton(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('agregarBoton')
         rutaImagenBoton, tipos = QFileDialog.getOpenFileName(self, 'Abrir imagen', 'resources/', 'Image Files (*.png *.jpg *.bmp)')   # Ruta del archivo imagen
 
         if not rutaImagenBoton:
@@ -460,7 +455,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Boton agregar Evento tab 4
     def agregarEvento(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('agregarEvento')
         self.modificado = True  # Cada vez que se hace un cambio se actualiza este flag
 
         selBAP3 = listaBAP3.currentRow()
@@ -995,8 +989,6 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Setea las propiedades de cada evento cuando se modifican desde la GUI tab 1
     def setEventoConfig(self, listaBotones, listaEventos, args):
-        # print('setEventoConfig')
-        self.modificado = True
         selBoton = listaBotones.currentRow()
         selEvento = listaEventos.currentRow()
 
@@ -1032,11 +1024,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                                 'RespuestaOK'] = args.comboBox2Tab1.currentText()
                                         except KeyError:
                                             pass
+        self.modificado = True
 
     # Setea los parametros del evento seleccionado
     def setEvento(self, listaBAP3, listaBotones, listaEventos, args):
-        # print('setEvento')
-        self.modificado = True
         selBAP3 = listaBAP3.currentRow()
         selBoton = listaBotones.currentRow()
         selEvento = listaEventos.currentRow()
@@ -1069,6 +1060,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                                 self.root[posBAP3][i][selBoton][j][selEvento].attrib['RespuestaOK'] = args.comboBox2Tab4.currentText()
                             except KeyError:
                                 pass
+        self.modificado = True
 
     # Cambio de id tabs tab 1
     def setIdTabsConfig(self, listaTabs):
