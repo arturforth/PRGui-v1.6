@@ -110,13 +110,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.guardarBAP3.clicked.connect(lambda: self.ModelBAP.guardarCambios())
 
         # Configuracion para BAPInfoManager.dat
-        self.lineEdit1BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit1BAP3, 1, 'BAP3'))
-        self.lineEdit2BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit2BAP3, 2, 'BAP3'))
-        self.lineEdit3BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit3BAP3, 3, 'BAP3'))
-        self.lineEdit4BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit4BAP3, 4, 'BAP3'))
-        self.lineEdit5BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit5BAP3, 5, 'BAP3'))
-        self.lineEdit6BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit6BAP3, 6, 'BAP3'))
-        self.lineEdit7BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit7BAP3, 7, 'BAP3'))
+        self.lineEdit1BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit1BAP3, 1, 'NroAbonado', 'BAP3'))
+        self.lineEdit2BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit2BAP3, 2, 'NroSucursal', 'BAP3'))
+        self.lineEdit3BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit3BAP3, 3, 'NombreSucursal', 'BAP3'))
+        self.lineEdit4BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit4BAP3, 4, 'InfoExtra', 'BAP3'))
+        self.lineEdit5BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit5BAP3, 5, 'IP_Port', 'BAP3'))
+        self.lineEdit6BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit6BAP3, 6, 'NroAbonadoKANT', 'BAP3'))
+        self.lineEdit7BAP3.editingFinished.connect(lambda: self.ModelBAP.writeDat(self.listWidgetPlacasBAP3, self.lineEdit7BAP3, 7, 'IDPlaca', 'BAP3'))
 
         self.checkBoxBAP3.stateChanged.connect(lambda: self.ModelBAP.habilitar(self.listWidgetPlacasBAP3, self.checkBoxBAP3, self.lineEdit1BAP3, self.lineEdit2BAP3, self.lineEdit3BAP3, self.lineEdit4BAP3, self.lineEdit5BAP3, self.lineEdit6BAP3, self.lineEdit7BAP3, 'BAP3'))
 

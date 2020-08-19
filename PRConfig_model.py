@@ -215,7 +215,7 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.writeTag(self.root, name, etiqueta1, etiqueta2, atributo, texto)
 
     # Para escribir en los archivos InfoManager.dat los datos ingresados desde la GUI.
-    def writeDat(self, lista, linea, numlinea, tipoBAP='BAP2'): # TODO: ver que otro nombre mejor se le puede poner
+    def writeDat(self, lista, linea, numlinea, label=None, tipoBAP='BAP2'): # TODO: ver que otro nombre mejor se le puede poner
         # print('writeDat')
         self.modificado = True   # Cada vez que se hace un cambio se actualiza este flag
 
@@ -223,13 +223,22 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
         posdispositivo = self.__findPosBAP(seldispositivo, tipoBAP)
 
-        if numlinea is 1:
-            if self.dispositivo is 'Kant':
-                self.root[posdispositivo].attrib['nronodo'] = linea.text()
-            else:
+        for i in range(len(self.root[posdispositivo])):
+            if label == self.root[posdispositivo][i].tag:
+                self.root[posdispositivo][i].text = linea.text()
+            if label == 'NroAbonado':
                 self.root[posdispositivo].attrib['id'] = linea.text()
-        else:
-            self.root[posdispositivo][numlinea-2].text = linea.text()
+            if label == 'NroNodo':
+                self.root[posdispositivo].attrib['nronodo'] = linea.text()
+
+
+        # if numlinea is 1:
+        #     if self.dispositivo is 'Kant':
+        #         self.root[posdispositivo].attrib['nronodo'] = linea.text()
+        #     else:
+        #         self.root[posdispositivo].attrib['id'] = linea.text()
+        # else:
+        #     self.root[posdispositivo][numlinea-2].text = linea.text()
 
     # Lee el tag correspondiente y devuelve el valor del mismo. En caso de no encontrar el tag, devuelve -1
     def readTag(self, root, name, etiqueta1, etiqueta2=None, atributo=None):
