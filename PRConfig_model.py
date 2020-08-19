@@ -55,10 +55,8 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Se ejecuta cuando se termina de crear la ventana y levanta los datos de los archivos .dat
     # En el caso de BAPInfoManager.dat solo carga las placas BAP2
-    def loadDat(self, lista, configgroupbox, removerbutton, tipoBAP='BAP2', args=None, listaTab3=None):
+    def loadDat(self, lista, configgroupbox, removerbutton, tipoBAP='BAP2', args=None, listaBAP3Tab3=None):
         lista.clear()
-
-        # lista2.item(0).text()
 
         for i in range(len(self.root)):
             if self.root[i].tag not in ['BAP', 'Kant', 'Console']:
@@ -71,7 +69,12 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
 
             cant = lista.count()
             item = QtWidgets.QListWidgetItem()
-            item.setText(self.dispositivo + ' {0}'.format(cant + 1))
+
+            if listaBAP3Tab3 is None:
+                item.setText(self.dispositivo + ' {0}'.format(cant + 1))
+            else:   # Copia los nombres de la lista de BAP3 del tab 3 cuando la invoca updateTab
+                item.setText(listaBAP3Tab3.item(cant).text())
+
             lista.addItem(item)
 
         # Tab 4 BAP3
@@ -1185,10 +1188,10 @@ class Model(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
 
     # Se actualiza tab 4 cuando se lo selecciona.
-    def updateTab(self, tabs, listaBAP3, listaBotones, listaEventos, args, listaTab3):
+    def updateTab(self, tabs, listaBAP3Tab3, listaBAP3Tab4, args):
         # Si se agrega un boton en tab 1 el cambio se debe ver reflejado en el tab 4 automaticamente.
         if tabs.currentIndex() == 3:
-            self.loadDat(listaBAP3, None, None, 'BAP3', args, listaTab3)
+            self.loadDat(listaBAP3Tab4, None, None, 'BAP3', args, listaBAP3Tab3)
 
     # Mapea las BAP2 y BAP3 de la lista de seleccion a la posicion real en el archivo .dat
     def __findPosBAP(self, selBAP, tipoBAP):

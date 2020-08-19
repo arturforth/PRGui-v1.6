@@ -142,7 +142,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.createTab4GroupBox()
 
         # Actualiza los cambios hechos en el tab1 en el tab4
-        self.tabs.currentChanged.connect(lambda: self.ModelBAP.updateTab(self.tabs, self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self, self.listWidgetPlacasBAP3))
+        self.tabs.currentChanged.connect(lambda: self.ModelBAP.updateTab(self.tabs, self.listWidgetPlacasBAP3, self.listaBAP3Tab4, self ))
 
         self.agregarBotonTab4.clicked.connect(lambda: self.ModelBAP.agregarBoton(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
         self.agregarEventoTab4.clicked.connect(lambda: self.ModelBAP.agregarEvento(self.listaBAP3Tab4, self.listaBotonesTab4, self.listaEventosTab4, self))
@@ -292,7 +292,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ModelSP1.loadConfig(self)     # Se pasa como argumento self de MainWindow
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP2, self.ConfigBAPGroupBox, self.removerBAP2)     # BAP2
         self.ModelBAP.loadDat(self.listWidgetPlacasBAP3, self.ConfigBAP3GroupBox, self.removerBAP3, 'BAP3')  # BAP3
-        self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 Tab 4
+        # self.ModelBAP.loadDat(self.listaBAP3Tab4, None, None, 'BAP3', self)    # BAP3 Tab 4
         self.ModelBAP.loadDatConfig(self.listaTabs, self.listaBotonesTab1, self.listaEventosTab1, self)  # Tab 1
         self.ModelCON.loadDat(self.listWidgetConsolas, self.ConfigCONGroupBox, self.removerCON)
         self.ModelKAN.loadDat(self.listWidgetKants, self.ConfigKANGroupBox, self.removerKAN)
